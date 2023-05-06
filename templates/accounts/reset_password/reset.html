@@ -1,0 +1,42 @@
+{% extends "../../base.html" %}
+
+
+{% load static %}
+
+
+{% block title %} Restablecer contraseña {{ block.super }} {% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <form id="change_password_form" action="{% url 'accounts:ask-reset-password' %}" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-lg-3 col-md-2"></div>
+                <div class="col-lg-6 col-md-8">
+                    <h2 class="mt-2 mb-3 fw-bold">Restablecer la contraseña</h2>
+                    <hr>
+                    <p>No te preocupes. Te enviaremos un correo electrónico con las instrucciones para restablecer tu contraseña.</p>
+                    <div class="mb-4 mt-5">
+                        <label for="email" class="form-label fw-bold">Correo electrónico <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" id="email" name="email" onkeyup="validate_email()" required>
+                        <small class="text-danger" id="email-help"></small>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start align-items-md-center">
+                        <button type="submit" class="btn btn-primary">
+                            Restablecer
+                        </button>
+                        <small>&nbsp;&nbsp;O <a href="{% url 'accounts:signin' %}">inicia sesión</a></small>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-2"></div>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+
+
+{% block js %}
+    <script src="{% static 'js/accounts/validators.js' %}"></script>
+{% endblock %}

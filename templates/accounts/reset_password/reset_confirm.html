@@ -1,0 +1,51 @@
+{% extends "../../base.html" %}
+
+
+{% load static %}
+
+
+{% block title %} Restablecer contraseña {{ block.super }} {% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <h2 class="mt-2 mb-5 fw-bold">Restablecer contraseña</h2>
+
+        <form id="change_password_form" action="{% url 'accounts:reset-password' token %}" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-4">
+                        <label for="password1" class="form-label fw-bold">Contraseña <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="password1" name="password1" onkeyup="validate_password()" required>
+                            <span class="input-group-text" id="show1" onclick="show_password('password1', 'show1')"><i class="fas fa-eye-slash"></i></span>
+                        </div>
+                        <small class="text-danger" id="password1-help"></small>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="password2" class="form-label fw-bold">Confirmar contraseña <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="password2" name="password2" onkeyup="confirm_password()" required>
+                            <span class="input-group-text" id="show2" onclick="show_password('password2', 'show2')"><i class="fas fa-eye-slash"></i></span>
+                        </div>
+                        <small class="text-danger" id="password2-help"></small>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-5">
+                        <button type="submit" class="btn btn-primary">
+                            Restablecer
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+
+
+{% block js %}
+    <script src="{% static 'js/accounts/validators.js' %}"></script>
+    <script src="{% static 'js/accounts/show_password.js' %}"></script>
+{% endblock %}

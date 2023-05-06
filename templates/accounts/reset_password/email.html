@@ -1,0 +1,13 @@
+Hola, {{ full_name }}
+
+Recibimos una solicitud para restablecer tu contraseña. Si no solicitaste este cambio, puedes ignorar este mensaje.
+
+Para restablecer tu contraseña, haz clic en el siguiente enlace o copia y pega la URL en tu navegador web:
+
+http://{{ domain }}{% url 'accounts:reset-password' token=token %}
+
+El enlace expirará en 1 hora. Si no haces clic en el enlace dentro de este período de tiempo, deberás iniciar el proceso de restablecimiento de nuevo.
+
+Si tienes algún problema con este proceso, no dudes en ponerte en contacto con nuestro equipo de soporte.
+
+Saludos cordiales de parte de TecnoBox.

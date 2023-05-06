@@ -1,0 +1,21 @@
+{% extends "../base.html" %}
+
+
+{% load static %}
+
+
+{% block title %}Inicio {{ block.super }} {% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row m-5">
+            {% if user.is_authenticated %}
+                <p>Hola, {{ user.get_full_name }}</p>
+                <p><a href="{% url 'accounts:signout' %}">Cerrar sesión</a></p>
+            {% else %}
+                <p><a href="{% url 'accounts:signin' %}">Iniciar sesión</a></p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
