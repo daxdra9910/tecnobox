@@ -127,3 +127,5 @@ site
 !**\.vscode\launch.json
 !**\.vscode\extensions.json
 **\.history
+
+Dockerfile
