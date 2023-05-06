@@ -50,6 +50,8 @@ class User(AbstractUser):
     password_reset_token = models.CharField(max_length=255, null=True, blank=True)
     password_reset_token_created_at = models.DateTimeField(null=True, blank=True)
 
+    photo = models.ImageField(upload_to='images/', max_length=100, blank=True, )
+
 
     def __str__(self):
         return f'{self.username}'
