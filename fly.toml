@@ -6,9 +6,10 @@ kill_timeout = 5
 processes = []
 
 [deploy]
-  release_command = "python manage.py migrate"
+  release_command = "python manage.py migrate --noinput"
 
 [env]
+  DJANGO_SETTINGS_MODULE = "config.settings"
   PORT = "8000"
 
 [experimental]
