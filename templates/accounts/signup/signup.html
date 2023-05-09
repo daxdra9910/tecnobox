@@ -54,9 +54,6 @@
                         <label for="city" class="form-label fw-bold">Ciudad <span class="text-danger">*</span></label>
                         <select class="form-select" id="city" name="city" required>
                             <option selected></option>
-                            {% for city in cities %}
-                                <option value="{{ city.id }}">{{ city.name }}</option>
-                            {% endfor %}
                         </select>
                     </div>
 
@@ -135,4 +132,5 @@
 {% block js %}
     <script src="{% static 'js/accounts/validators.js' %}"></script>
     <script src="{% static 'js/accounts/show_password.js' %}"></script>
+    <script src="{% static 'js/accounts/dynamic_cities.js' %}"></script>
 {% endblock %}

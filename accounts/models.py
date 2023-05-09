@@ -1,8 +1,10 @@
 import secrets
 
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 from django.utils import timezone
+from PIL import Image
 
 
 
@@ -66,6 +68,31 @@ class User(AbstractUser):
         self.password_reset_token_created_at = timezone.now()
         self.save()
         return token
+
+
+    def get_url_photo(self):
+        """
+        Devuelve la URL de la foto de perfil del usuario. Si este no tiene,
+        devuelve una imagen predefinida.
+        """
+        if self.photo:
+            return self.photo.url
+        else:
+            return settings.STATIC_URL + 'img/default_profile_photo.jpg'
+
+
+    def save(self, *args, **kwargs):
+        """
+        Se sobrescribe el método save() para que si el usuario sube una foto 
+        de un tamaño mayor a 300x300, se guarde con ese tamaño.
+        """
+        super().save(*args, **kwargs)
+        if self.photo:
+            img = Image.open(self.photo.path)
+            if img.height > 300 or img.width > 300:
+                output_size = (300, 300)
+                img.thumbnail(output_size)
+                img.save(self.photo.path)
 
 
 

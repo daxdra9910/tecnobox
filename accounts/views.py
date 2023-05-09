@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.utils import timezone
@@ -278,3 +279,27 @@ class ResetPassword(View):
 
         # Redirigimos al usuario a una página que indica que el proceso ha sido exitoso.
         return render(request, 'accounts/reset_password/reset_complete.html')
+
+
+
+
+class CitiesByRegion(View):
+    """
+    Muestra un objeto JSON con las ciudades de un departamento dado.
+    Esto con el fin de servir datos que sean consumibles por JavaScript.
+    """
+
+    def get(self, request, region_id):
+        region = Region.regions.get(pk=region_id)
+        cities = City.cities.filter(region=region_id)
+        data = []
+
+        for city in cities:
+            item = {
+                'id': city.id,
+                'name': city.name,
+            }
+            data.append(item)
+
+        # Como los datos no son un diccionario, se usa safe=False.
+        return JsonResponse(data, safe=False)

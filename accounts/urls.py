@@ -16,4 +16,6 @@ urlpatterns = [
     path('change-password/', views.ChangePassword.as_view(), name='change-password'),
     path('reset-password/', views.AskResetPassword.as_view(), name='ask-reset-password'),
     path('reset/<str:token>/', views.ResetPassword.as_view(), name='reset-password'),
+
+    path('region/<int:region_id>/cities/', views.CitiesByRegion.as_view(), name='cities-by-region'),
 ]
