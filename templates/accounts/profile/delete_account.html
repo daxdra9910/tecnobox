@@ -1,0 +1,33 @@
+{% extends "../../base.html" %}
+
+
+{% load static %}
+
+
+{% block title %} Eliminar cuenta de usuario {{ block.super }} {% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xxl-5 col-xl-6 col-lg-7 col-md-8 col-sm-10">
+
+                <h2 class="mt-2 fw-bold">Eliminar cuenta de usuario</h2>
+                <hr>
+
+                <form id="delete_account_form" class="mt-5" action="{% url 'accounts:delete-account' %}" method="POST">
+                    {% csrf_token %}
+
+                    <p>Presiona el botón <strong>Eliminar cuenta</strong> para desactivar tu cuenta de usuario de TecnoBox.</p>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-5">
+                        <button type="submit" class="btn btn-danger">
+                            Eliminar cuenta
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

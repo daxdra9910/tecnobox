@@ -1,0 +1,68 @@
+{% extends "../../base.html" %}
+
+
+{% load static %}
+
+
+{% block title %} Agregar dirección de contacto {{ block.super }} {% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row d-flex justify-content-around align-items-center">
+            <div class="col-xl-4 col-lg-5 col-md-6">
+
+                <h2 class="mt-2 fw-bold">Nueva dirección de contacto</h2>
+                <hr>
+
+                <form id="address_form" class="mt-5" action="{% url 'accounts:add-address' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label for="address" class="form-label fw-bold">Dirección del domicilio <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control mb-2" id="address" name="address" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="region" class="form-label fw-bold">Departamento <span class="text-danger">*</span></label>
+                        <select class="form-select" id="region" name="region" required>
+                            <option selected></option>
+                            {% for region in regions %}
+                                <option value="{{ region.id }}">{{ region.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="city" class="form-label fw-bold">Ciudad <span class="text-danger">*</span></label>
+                        <select class="form-select" id="city" name="city" required>
+                            <option selected></option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="phone" class="form-label fw-bold">Número de teléfono <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="phone" name="phone" onkeyup="validate_phone()" required>
+                        <small class="text-danger" id="phone-help"></small>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-5">
+                        <button type="submit" class="btn btn-primary" id="submit-btn">
+                            Añadir
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-xl-4 col-lg-5 col-md-6 d-none d-md-block my-5">
+                <div class="img-container">
+                    <img class="img-fluid rounded float-end shadow" src="{% static 'img/map.jpg' %}" alt="login image">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+
+{% block js %}
+    <script src="{% static 'js/accounts/validators.js' %}"></script>
+    <script src="{% static 'js/accounts/dynamic_cities.js' %}"></script>
+{% endblock %}

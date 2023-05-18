@@ -114,9 +114,8 @@ function confirm_password(event) {
 function validate_terms_and_conditions(event) {
     // Lanza un mensaje de alerta si no se acepta la declaración de privacidad ni los términos y condiciones.
     const check1 = document.getElementById('check1');
-    const check2 = document.getElementById('check2');
 
-    if (!check1.checked || !check2.checked) {
+    if (!check1.checked) {
         event.preventDefault();
         $('#myModal').modal('show');
     }

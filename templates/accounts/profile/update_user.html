@@ -1,0 +1,67 @@
+{% extends "../../base.html" %}
+
+
+{% load static %}
+
+
+{% block title %} Actualizar información personal {{ block.super }} {% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row d-flex justify-content-around align-items-center">
+            <div class="col-xl-4 col-lg-5 col-md-6">
+
+                <h2 class="mt-2 fw-bold">Información personal</h2>
+                <hr>
+
+                <form id="profile_form" class="mt-5" action="{% url 'accounts:update-profile' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label for="first_name" class="form-label fw-bold">Nombres <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user.first_name }}" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="last_name" class="form-label fw-bold">Apellidos <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ user.last_name }}" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="username" class="form-label fw-bold">Nombre de usuario <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}" onkeyup="validate_username()" required>
+                        <small class="text-danger" id="username-help"></small>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="email" class="form-label fw-bold">Correo electrónico <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" onkeyup="validate_email()" required>
+                        <small class="text-danger" id="email-help"></small>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="birthdate" class="form-label fw-bold">Fecha de nacimiento <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="birthdate" name="birthdate" value="{{ user.birthdate|date:'Y-m-d' }}" onchange="validate_birthdate()" required>
+                        <small class="text-danger" id="birthdate-help"></small>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-5">
+                        <button type="submit" class="btn btn-primary" id="submit-btn">
+                            Actualizar
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-xl-4 col-lg-5 col-md-6 d-none d-md-block my-5">
+                <div class="img-container">
+                    <img class="img-fluid rounded float-end shadow" src="{% static 'img/update_profile.jpg' %}" alt="login image">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+
+{% block js %}
+    <script src="{% static 'js/accounts/validators.js' %}"></script>
+{% endblock %}

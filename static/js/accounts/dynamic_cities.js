@@ -2,14 +2,14 @@
 // Carga las opciones de ciudad de forma dinámica según el departamento que seleccione el usuario.
 $(document).ready(function() {
     $('#region').change(function() {
-        var regionId = $(this).val();
+        let regionId = $(this).val();
         if (regionId) {
             $.ajax({
                 url: '/region/' + regionId + '/cities/',
                 type: 'get',
                 dataType: 'json',
                 success: function(cities) {
-                    var $citySelect = $('#city');
+                    let $citySelect = $('#city');
                     $citySelect.empty();
                     $citySelect.append('<option value="">Seleccione una ciudad...</option>');
                     $.each(cities, function(index, city) {

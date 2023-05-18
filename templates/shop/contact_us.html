@@ -1,0 +1,81 @@
+{% extends "../base.html" %}
+
+
+{% load static %}
+
+
+{% block title %}Contáctenos {{ block.super }} {% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row d-flex align-items-center my-5">
+            <div class="col-md-7 px-5">
+                <h2 class="mt-2 fw-bold">Contáctenos</h2>
+                <hr>
+                <p class="mb-5">
+                    Nos encanta saber de ustedes, nuestros clientes.<br>
+                    Póngase en contácto con nosotros y nos aseguraremos de responderle lo antes posible.
+                </p>
+
+                <form id="contact_form" action="{% url 'shop:contact-us' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group mb-3">
+                        <label for="full_name" class="form-label fw-bold">Nombre completo <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="full_name" name="full_name" required>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="phone" class="form-label fw-bold">Número de teléfono</label>
+                        <input type="number" class="form-control" id="phone" name="phone" onkeyup="validate_phone()">
+                        <small class="text-danger" id="phone-help"></small>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="email" class="form-label fw-bold">Correo electrónico <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" id="email" name="email" onkeyup="validate_email()" required>
+                        <small class="text-danger" id="email-help"></small>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="message" class="form-label fw-bold">Mensaje <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-5">
+                        <button type="submit" class="btn btn-primary my-btn" id="submit-btn">
+                            Enviar
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-md-5 d-flex justify-content-center align-items-center my-5">
+                <div class="card mx-auto bg-custom1 shadow-sm border-dark">
+                    <div class="card-body border-container">
+                        <h6 class="card-title fw-bold mb-4">Información de nuestra tienda</h6>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item bg-custom1">
+                                <i class="fa fa-map-marker"></i> &nbsp;&nbsp; <small>Cl. 13 #45-18, Tuluá, Colombia</small>
+                            </li>
+                            <li class="list-group-item bg-custom1">
+                                <i class="fa fa-phone"></i> &nbsp;&nbsp; <small>(+57) 310-555-1234</small>
+                            </li>
+                            <li class="list-group-item bg-custom1">
+                                <i class="fa fa-clock-o"></i> &nbsp;&nbsp; <small>Lunes - Viernes: 8:00 - 18:00</small>
+                            </li>
+                            <li class="list-group-item bg-custom1">
+                                <i class="fa fa-envelope"></i> &nbsp;&nbsp; <small>tecnobox@info.co</small>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script src="{% static 'js/accounts/validators.js' %}"></script>
+{% endblock %}

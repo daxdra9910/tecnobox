@@ -9,22 +9,27 @@
 
 {% block content %}
     <div class="container">
-        <h2 class="mt-2 fw-bold">Inicio de sesión</h2>
-        <small>¿No tienes una cuenta? <a href="{% url 'accounts:signup' %}">Registrate</a></small>
+        <h1 class="mt-2 fw-bold">Inicio de sesión</h1>
 
         <form id="signin_form" action="{% url 'accounts:signin' %}" method="POST" class="mt-5">
             {% csrf_token %}
-            <div class="row">
-                <div class="col-xxl-5 col-xl-6 col-lg-7 col-md-8 col-sm-10">
+            <div class="row d-flex justify-content-around align-items-center">
+                <div class="col-xxl-5 col-xl-6 col-lg-7 col-md-10 px-5 py-4 border rounded">
+                    <div class="mb-5">
+                        <h5><strong>Usuarios registrados</strong></h5>
+                        <small>Si tienes una cuenta, inicia sesión con tu nombre de usuario y contraseña.</small>
+                        <small>¿No tienes una cuenta? <a href="{% url 'accounts:signup' %}">Registrate</a>.</small>
+                    </div>
+
                     <div class="mb-4">
                         <label for="username" class="form-label fw-bold">Nombre de usuario <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="username" name="username" required>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="johndoe" required>
                     </div>
 
                     <div class="mb-2">
                         <label for="password" class="form-label fw-bold">Contraseña <span class="text-danger">*</span></label>
                         <div class="input-group">
-                            <input type="password" class="form-control" id="password" name="password" required>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="********" required>
                             <span class="input-group-text" id="show" onclick="show_password('password', 'show')"><i class="fas fa-eye-slash"></i></span>
                         </div>
                     </div>
@@ -36,7 +41,7 @@
                         </label>
                     </div>
 
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-5">
+                    <div class="mt-4 text-center">
                         <button type="submit" class="btn btn-primary">
                             Iniciar sesión
                         </button>
@@ -44,6 +49,12 @@
 
                     <div class="mt-2 text-center">
                         <a href="{% url 'accounts:ask-reset-password' %}"><small>¿Olvidaste tu contraseña?</small></a>
+                    </div>
+                </div>
+
+                <div class="col-xxl-5 col-xl-5 col-lg-7 d-none d-xl-block my-5">
+                    <div class="img-container">
+                        <img class="img-fluid rounded float-end shadow" src="{% static 'img/login_img.jpg' %}" alt="login image">
                     </div>
                 </div>
             </div>

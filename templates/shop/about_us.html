@@ -1,0 +1,157 @@
+{% extends "../base.html" %}
+
+
+{% load static %}
+
+
+{% block title %}Acerca de nosotros {{ block.super }} {% endblock %}
+
+
+{% block resources %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-EKqOpk8ptHRJizQ16uiEOpBLsl9RpeZqxqM+drdcs2M1j33KQEaw5lJdJUfBnOfQqG9JMBYlS7l3gK4yFD12nQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+{% endblock %}
+
+
+{% block content %}
+    <!-- Carrousel de imagenes -->
+    <section class="carousel">
+        <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{% static 'img/carousel1.jpg' %}" class="d-block w-100 img-fluid" alt="Image1">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3 class="display-5 fw-holder fw-bold text-uppercase">TECNOBOX</h3>
+                        <p class="mt-5 fs-4 text-uppercase text-center">
+                            En nuestra tienda encontrarás gran variedad de componentes.
+                        </p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'img/carousel2.jpg' %}" class="d-block w-100" alt="Image 2">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3 class="display-5 fw-holder fw-bold text-uppercase">
+                            ¡Busca, agrega a tu carrito y pagas!
+                        </h3>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'img/carousel3.jpg' %}" class="d-block w-100" alt="Image 3">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3 class="display-5 fw-holder fw-bold text-uppercase">
+                            Tu medio de pago no será excusa.
+                        </h3>
+                        <p class="mt-5 fs-4 text-uppercase text-center">
+                            En TecnoBox contamos con diferentes medios de pago, para mayor comodidad.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Próximo</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- Sección 1 Quienes somos-->
+    <section class="bg-light p-md-5" >
+        <div class="container py-5 py-md-2">
+            <div class="row d-flex align-items-center">
+                <div class="col-12 col-md-6 text-center">
+                    <h2 class="py-4"data-aos="fade-up"><strong>¿Quiénes somos?</strong></h2>
+                    <p class="px-lg-5" data-aos="fade-down">
+                        TecnoBox es una tienda virtual dedicada a la comercialización de artículos
+                        tecnológicos; específicamente de computación. Creada por un equipo de
+                        profesionales apasionados por la tecnología. En TecnoBox trabajamos
+                        arduamente para que nuestros clientes puedan satisfacer todas las necesidades
+                        a la hora de querer comprar un artículo tecnológico.
+                    </p>
+                </div>
+                <div class="col-12 col-md-6 text-center my-5">
+                    <img src="{% static 'img/logo.png' %}" alt="Imagen de la sección 1" class="img-fluid" width="350" data-aos="fade-left">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección 2 Nuestros Servicios-->
+    <section class="bg-custom text-light p-md-5">
+        <div class="container py-5 py-md-2">
+            <div class="row d-flex align-items-center">
+                <div class="col-12 col-md-6 text-center my-5">
+                    <img src="{% static 'img/pc_gamer4.png' %}" alt="Imagen de la sección 2" class="img-fluid" width="300" data-aos="fade-right">
+                </div>
+                <div class="col-12 col-md-6 text-center">
+                    <h2 class="py-4" data-aos="fade-left"><strong>Nuestros Servicios</strong></h2>
+                    <p class="px-lg-5" data-aos="fade-left">
+                        En TecnoBox nos mantenemos al día con las últimas tendencias y tecnologías
+                        en nuestra área de ventas para garantizar que nuestros clientes reciban siempre
+                        los mejores productos de calidad y vanguardia, entregando una excelente
+                        experiencia y comodidad a nuestros clientes.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección 3 Mision-->
+    <section class="bg-primary p-md-5">
+        <div class="container py-5 py-md-2">
+            <div class="row d-flex align-items-center">
+                <div class="col-12 col-md-6 text-center">
+                    <h2 class="py-4 text-light" data-aos="flip-up"><strong>Misión</strong></h2>
+                    <p class="text-light px-lg-5" data-aos="flip-up">
+                        Nuestra misión es ofrecer una experiencia de compra en línea superior a
+                        nuestros clientes, proporcionando productos de alta calidad a precios
+                        competitivos y brindando un servicio al cliente excepcional. Queremos ser
+                        la mejor tienda de artículos tecnológicos en línea y el lugar al que acudan
+                        los clientes para satisfacer sus necesidades tecnológicas.
+                    </p>
+                </div>
+                <div class="col-12 col-md-6 text-center my-5">
+                    <img src="{% static 'img/pc_gamer2.png' %}" alt="Imagen de la sección 3" class="img-fluid" width="300" data-aos="flip-up">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección 4 Vision-->
+    <section class="bg-light p-md-5">
+        <div class="container py-5 py-md-2">
+            <div class="row d-flex align-items-center">
+                <div class="col-12 col-md-6 text-center my-5">
+                    <img src="{% static 'img/pc_gamer3.png' %}" alt="Imagen de la sección 4" class="img-fluid" width="300" data-aos="zoom-in-down">
+                </div>
+                <div class="col-12 col-md-6 text-center">
+                    <h2 class="py-4" data-aos="zoom-in"><strong>Visión</strong></h2>
+                    <p class="px-lg-5" data-aos="zoom-in">
+                        Nuestra visión es ser la tienda en línea líder en el mercado de artículos
+                        tecnológicos, proporcionando a nuestros clientes una experiencia de compra
+                        excepcional y satisfaciendo todas sus necesidades en tecnología. Queremos
+                        ser reconocidos como una empresa confiable y de confianza en el mundo
+                        tecnológico, y seguir siendo innovadores en el lanzamiento de productos y en
+                        la implementación de nuevas tecnologías para mejorar la experiencia de compra
+                        de nuestros clientes.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+
+{% block js %}
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    <script> AOS.init(); </script>
+{% endblock %}
