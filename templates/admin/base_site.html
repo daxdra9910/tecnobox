@@ -1,0 +1,22 @@
+{% extends "admin/base.html" %}
+
+
+{% load static %}
+
+
+{% block title %}
+    {% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:'TecnoBox' }}
+{% endblock %}
+
+
+{% block branding %}
+    <h1 id="site-name">
+        <a href="{% url 'admin:index' %}">
+            <img src="{% static 'img/logo_2.png' %}" alt="logo" width="50">
+            {{ site_header|default:'Administración de TecnoBox' }}
+        </a>
+    </h1>
+{% endblock %}
+
+
+{% block nav-global %}{% endblock %}
