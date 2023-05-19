@@ -73,8 +73,14 @@ class ChangeProfilePhoto(LoginRequiredMixin, View):
         new_img.save(buf, format='JPEG')
         new_file = InMemoryUploadedFile(buf, None, 'filename.jpg', 'image/jpeg', buf.tell(), None)
 
+        # Eliminamos la foto de perfil si ya existe una anterior.
+        if user.photo:
+            storage = user.photo.storage
+            storage.delete(user.photo.path)
+
         # Actualizamos la foto del usuario.
-        user.photo.save(f'photo_{user.pk}.jpg', new_file, save=True)
+        user.photo.save(f'photo_{user.pk}.jpg', new_file, save=False)
+        user.save()
 
         # Redirigimos a la página del perfil de usuario.
         messages.success(request, '¡La foto de perfil ha sido actualizada!')
@@ -96,9 +102,13 @@ class DeleteProfilePhoto(LoginRequiredMixin, View):
         # Obtenemos el usuario autenticado.
         user = request.user
 
-        # Actualizamos la foto del usuario.
-        user.photo = os.path.join(settings.BASE_DIR, 'media/profile/default.jpg')
-        user.save()
+        # Eliminamos la foto de perfil si ya existe una anterior.
+        if user.photo:
+            storage = user.photo.storage
+            storage.delete(user.photo.path)
+
+            user.photo = ''
+            user.save()
 
         # Redirigimos a la página del perfil de usuario.
         messages.success(request, '¡La foto de perfil ha sido eliminada!')
@@ -243,7 +253,8 @@ class DeleteAccount(LoginRequiredMixin, View):
 
     def post(self, request):
         """
-        Guarda la información del usuario en la base de datos.
+        Actualiza la información del usuario en la base de datos.
+        El usuario en realidad no se elimina, solo se deshabilita.
         """
         # Obtenemos el usuario autenticado.
         user = request.user
@@ -251,6 +262,14 @@ class DeleteAccount(LoginRequiredMixin, View):
         # Desactivamos la cuenta de usuario.
         user.is_active = False
         user.save()
+
+        # Eliminamos la foto de perfil si ya existe una anterior.
+        if user.photo:
+            storage = user.photo.storage
+            storage.delete(user.photo.path)
+
+            user.photo = ''
+            user.save()
 
         # Redirigimos a la página del inicio de sesión.
         messages.success(request, '¡Tu cuenta de usuario ha sido eliminada!')

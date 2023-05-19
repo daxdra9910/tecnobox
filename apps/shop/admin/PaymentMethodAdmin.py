@@ -12,6 +12,7 @@ class PaymentMethodAdmin(BaseModelAdmin):
     Modelo PayMethod de la interfaz de administración.
     """
     list_display = ['name', 'created_at', 'updated_at', 'is_active']
+    list_filter = ['is_active']
     search_fields = ['name', 'is_active']
     ordering = ['name']
     actions = [disable_selected, enable_selected]

@@ -52,12 +52,12 @@ class User(AbstractUser):
     def save(self, *args, **kwargs):
         """
         Se sobrescribe el método save() para que si el usuario sube una foto
-        de un tamaño mayor a 300x300, se guarde con ese tamaño.
+        de un tamaño mayor a 200x200, se guarde con ese tamaño.
         """
         super().save(*args, **kwargs)
         if self.photo:
             img = Image.open(self.photo.path)
-            if img.height > 300 or img.width > 300:
-                output_size = (300, 300)
+            if img.height > 200 or img.width > 200:
+                output_size = (200, 200)
                 img.thumbnail(output_size)
                 img.save(self.photo.path)

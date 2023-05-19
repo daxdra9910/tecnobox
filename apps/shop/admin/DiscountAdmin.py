@@ -12,6 +12,7 @@ class DiscountAdmin(BaseModelAdmin):
     Modelo Discount de la interfaz de administración.
     """
     list_display = ['name', 'percentage', 'finish_at', 'created_at', 'updated_at', 'is_active']
+    list_filter = ['is_active']
     search_fields = ['name', 'percentage', 'finish_at', 'is_active']
     ordering = ['name', 'percentage', 'finish_at']
     actions = [disable_selected, enable_selected]

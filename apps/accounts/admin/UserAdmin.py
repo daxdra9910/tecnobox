@@ -1,10 +1,23 @@
 from django.conf import settings
 from django.contrib import admin
+from django.contrib.auth.forms import UserChangeForm
 from django.utils.html import format_html
 
 from apps.utils.actions import BaseModelAdmin, disable_selected, enable_selected
-from apps.accounts.forms import UserChangeForm
 from apps.accounts.models import Contact, User
+
+
+
+
+class UserChangeForm(UserChangeForm):
+    """
+    Formulario de modificación del modelo User.
+    Define los campos que tendrá el formulario.
+    """
+
+    class Meta(UserChangeForm.Meta):
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name', 'birthdate', 'is_active', 'is_staff', 'photo']
 
 
 
