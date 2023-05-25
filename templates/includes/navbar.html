@@ -1,1 +1,59 @@
-navbar here
+{% load static %}
+<header class="sticky-lg-top">
+    <div class="bg-dark p-2">
+        <div class="container-md d-flex justify-content-end align-items-center gap-3">
+            <span class="text-light align-middle fw-semibold">Contáctenos: (+57) 300 000 0000</span>
+            <a href="#"><img src="{% static 'svg/facebook.svg' %}" class="img-fluid" width="25px" alt="Facebook icon"/></a>
+            <a href="#"><img src="{% static 'svg/instagram.svg' %}" class="img-fluid" width="25px" alt="Instagram icon"/></a>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg bg-body-light border-bottom">
+        <div class="container-md">
+            <a class="navbar-brand d-inline-block align-text-middle" href="#">
+                <img src="{% static 'img/logo_2.png' %}" alt="Logo" width="50">
+                <strong>Tecnobox</strong>
+            </a>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mb-2 mb-lg-0 fw-semibold gap-lg-3">
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="#">Inicio</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Catálogo</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-inline-block align-text-middle" href="#"><img src="{% static 'svg/sales.svg' %}" width="15"/>Ofertas</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Nosotros</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Contacto</a>
+              </li>
+            </ul>
+          </div>
+          <div class="d-flex gap-3">
+            <div class="position-relative">
+              <a href="#">
+                  <span class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger">0</span>
+                  <img src="{% static 'svg/cart.svg' %}"  alt="Cart" width="40">
+              </a> 
+             </div>
+                <div class="btn-group">
+                    <img src="{% static 'img/default.jpg' %}" width="40" class="rounded-circle dropdown-toggle pointer" data-bs-toggle="dropdown" aria-expanded="false" type="button">
+                    <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Separated link</a></li>
+                    </ul>
+                </div>
+            </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </nav>
+</header>
