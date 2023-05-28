@@ -1,1 +1,56 @@
-Footer here
+{% load static %}
+<footer class="bg-dark text-light pt-5 pb-4">
+    <div class="container text-center text-md-start">
+        <div class="row text-center text-md-start">
+            <div class="col-md-3 col-lg-3 col-xl-3 d-flex mx-auto align-items-center justify-content-center">
+               <a href="/">
+                <img src="{% static 'img/logo.png' %}" width="200"/>
+               </a>
+            </div>
+            <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                <h5 class="text-uppercase mb-4 fw-bold">Información</h5>
+                <hr class="mb-4">
+                <ul class="list-unstyled">
+                <li><a class="text-light" href="#">Inicio</a></li>
+                <li><a class="text-light" href="#">Catálogo</a></li>
+                <li><a class="text-light" href="#">Ofertas</a></li>
+                <li><a class="text-light" href="#">Nosotros</a></li>
+                <li><a class="text-light" href="#">Contacto</a></li>
+                <li><a class="text-light" href="{% url 'shop:terms-and-conditions' %}">Términos y condiciones</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                <h5 class="text-uppercase mb-4 fw-bold">Categorías</h5>
+                <hr class="mb-4">
+                <ul class="list-unstyled">
+                <li><a class="text-light" href="#">Portátiles</a></li>
+                <li><a class="text-light" href="#">PC de escritorio</a></li>
+                <li><a class="text-light" href="#">Impresoras y escáneres</a></li>
+                <li><a class="text-light" href="#">Dispositivos de red</a></li>
+                <li><a class="text-light" href="#">Partes de PC</a></li>
+                <li><a class="text-light" href="#">Otros</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                <h5 class="text-uppercase mb-4 fw-bold">Dirección</h5>
+                <hr class="mb-4">
+                <ul class="list-unstyled">
+                <li>Dirección: Cl. 123 # 1-10, Bogotá</li>
+                <li>Teléfono: <a href="tel:+573000000000" class="text-info">(+57) 300 000 0000</a></li>
+                <li>Abrimos de Lunes a Jueves: 9:00 AM - 5:30 PM</li>
+                <li>Viernes: 9:00 AM - 6:00 PM</li>
+                <li>Sábado: 11:00 AM - 5:00 PM</li>
+                <li>E-mail: store@mail.com</li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <div class="container d-flex justify-content-between align-middle">
+            <div class="d-flex gap-3">
+            <a href="https://es-la.facebook.com/" target="_blank"><img src="{% static 'svg/facebook.svg' %}" width="25"/></a>
+            <a href="https://instagram.com/" target="_blank"><img src="{% static 'svg/instagram.svg' %}" width="25"/></a>
+            </div>
+            <span class="fs-6">Copyright © 2023 Todos los derechos reservados</span>
+        </div>
+    </div>
+</footer>
