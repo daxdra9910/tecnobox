@@ -46,7 +46,7 @@ class User(AbstractUser):
         if self.photo:
             return self.photo.url
         else:
-            return settings.MEDIA_URL + 'profile/default.jpg'
+            return settings.STATIC_URL + 'img/default.jpg'
 
 
     def save(self, *args, **kwargs):

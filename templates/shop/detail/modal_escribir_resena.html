@@ -1,0 +1,30 @@
+<div id="escribirOpinion" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title fw-bold">¿Qué te pareció nuestro producto {{ product.name }}?</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></butto>
+            </div>
+
+            <form id="review_form" action="{% url 'shop:make-review' product.pk %}" method="POST">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <textarea class="form-control" id="comment" name="comment" rows="5" required></textarea>
+
+                    <div class="px-2 py-3">
+                        <input type="hidden" id="rating" name="rating">
+                        <span>Califica el producto: </span>
+                        {% for i in '12345'|make_list %}
+                            <i class="far fa-star text-warning my-star" data-index="{{ forloop.counter0 }}"></i>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-outline-primary" id="submit-btn">
+                        Dejar reseña
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 
@@ -13,6 +14,13 @@ class ProductPhoto(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('fecha de creación'))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_('fecha de actualización'))
     is_active = models.BooleanField(default=True, verbose_name=_('activo'))
+
+
+    def image_preview(self):
+        if self.photo:
+            return mark_safe('<img src="{0}" width="150" height="150" />'.format(self.photo.url))
+        else:
+            return '(No image)'
 
 
     def __str__(self):

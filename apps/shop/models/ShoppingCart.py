@@ -15,7 +15,7 @@ class ShoppingCart(models.Model):
 
 
     def __str__(self):
-        return f'Shopping cart of {self.user.username} - #{self.purchase_order.pk}'
+        return f'Shopping cart of {self.user.username} - #{self.pk}'
 
 
     class Meta:

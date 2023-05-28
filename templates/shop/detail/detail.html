@@ -1,0 +1,239 @@
+{% extends "../../base.html" %}
+
+
+{% load static %}
+{% load humanize %}
+
+
+{% block title %}{{ product.name }} {{ block.super }} {% endblock %}
+
+
+{% block content %}
+    <div class="container">
+
+        <!-- Sección de detalles -->
+        <div class="row mt-5 d-flex align-items-center">
+
+            <!-- Lista de miniaturas de las fotografías del producto -->
+            {% if photos %}
+                <div class="col-lg-1 d-none d-xl-block">
+                    <ul class="list-group">
+                        {% for photo in photos %}
+                            <li class="list-group-item product-list">
+                                <img src="../../media/{{ photo.photo }}" class="img-fluid rounded" onclick="changeCarouselSlide( '{{ forloop.counter0 }}' )" alt="Product photo">
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Carrusel con la imagen activa -->
+                <div class="col-md-6 col-lg-4 rounded" style="border: 1px solid rgba(0, 0, 0, 0.125);">
+                    <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <ol class="carousel-indicators product" style="filter:invert(100%);">
+                            {% for photo in photos %}
+                                <li data-bs-target="#myCarousel" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %} class="active" {% endif %}></li>
+                            {% endfor %}
+                        </ol>
+                        <div class="carousel-inner text-center product">
+                            {% for photo in photos %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <img src="../../media/{{ photo.photo }}" class="d-block w-100" alt="product {{ forloop.counter }}">
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-md-1 d-none d-xl-block"></div>
+                <div class="col-md-4 d-none d-xl-block">
+                    <img src="{% static 'img/no_image_available.jpg' %}" class="img-fluid rounded d-block w-100" alt="No image available">
+                </div>
+            {% endif %}
+
+            <div class="col-md-1 d-none d-lg-block"></div>
+
+            <!-- Información del producto -->
+            <div class="col-md-6 col-lg-5 col-xl-4 align-self-start">
+                <div class="text-muted fw-light mt-5 mt-md-0">
+                    {{ product.category.name }} &nbsp; | &nbsp; {{ product.brand.name }}
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                    {% if product.stock < 15 %}
+                        <span class="text-danger">{{ product.stock }} disponibles</span>
+                    {% endif %}
+                </div>
+
+                <h1 class="fs-3 fw-bold">{{ product.name }}</h1>
+
+                <div class="mt-3">
+                    {% if discount_percentage %}
+                        <div class="d-flex align-items-center">
+                            <span class="text-decoration-line-through text-muted">
+                                ${{ product.price|intcomma }}
+                            </span>
+                            &nbsp;&nbsp;
+                            <span class="badge rounded-pill bg-warning text-dark">
+                                {{ discount_percentage }}% de descuento
+                            </span>
+                        </div>
+                    {% endif %}
+
+                    <div class="text-primary fs-5 fw-bold">
+                        ${{ total|intcomma }}
+                    </div>
+                </div>
+
+                <hr>
+
+                <div>{{ product.description }}</div>
+
+                <div class="mt-5">
+                    <form id="form" action="{% url 'shop:detail' product.pk %}" method="POST">
+                        {% csrf_token %}
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" id="quantity" name="quantity" style="flex: 0 1 100px;" min="1" oninput="validateQuantity(this)" required>
+                            <button type="submit" class="btn btn-outline-primary">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>&nbsp; Añadir al carrito</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de reseñas -->
+        <div class="row text-left mt-5">
+            <h1 class="fs-5 fw-bold">
+                Opiniones del producto
+
+                {% if not has_bought %}
+                    <i class="far fa-question-circle" data-bs-toggle="tooltip" data-bs-placement="right" title="Compra antes de opinar."></i>
+                {% endif %}
+
+                {% if has_reviewed %}
+                    <i class="far fa-question-circle" data-bs-toggle="tooltip" data-bs-placement="right" title="Ya reseñaste este producto."></i>
+                {% endif %}
+            </h1>
+
+            {% if has_bought and not has_reviewed %}
+                <a href="#" data-bs-toggle="modal" data-bs-target="#escribirOpinion">Deja una opinión.</a>
+
+                {% include './modal_escribir_resena.html' %}
+            {% endif %}
+        </div>
+
+        <div class="row">
+            {% if reviews %}
+                <div class="col-md-6 col-lg-4 col-xl-3 px-4 px-lg-2 text-left mt-5">
+                    <div class="d-flex align-items-center">
+                        <div class="fs-1 fw-bold text-danger pe-5">{{ average_rating }}</div>
+                        <div>
+                            {% for i in '12345'|make_list %}
+                                {% if i|add:'0' <= average_rating %}
+                                    <i class="fas fa-star text-warning"></i>
+                                {% else %}
+                                    <i class="far fa-star text-warning"></i>
+                                {% endif %}
+                            {% endfor %}
+                            <br>
+                            {{ total_reviews }} calificaciones
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        {% for key, value in rating_counts.items %}
+                            <div class="d-flex align-items-center justify-content-between">
+                                <progress id="rating_{{ key }}" value="{{ value }}" max="{{ total_reviews }}">{{ value }}</progress>
+                                <label class="text-muted" for="rating_{{ key }}">{{ value }} &nbsp; <i class="fas fa-star text-dark"></i></label><br>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="col-md-6 col-xl-7 text-left mt-4 m-xl-4">
+                {% for review in reviews|slice:reviews_displayed %}
+                    <div class="border rounded p-3 mb-1 mt-3">
+                        <div class="d-flex justify-content-between">
+                            <div class="mb-1">
+                                {% for i in '12345'|make_list %}
+                                    {% if i|add:'0' <= review.rating %}
+                                        <i class="fas fa-star text-warning"></i>
+                                    {% else %}
+                                        <i class="far fa-star text-warning"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <div class="text-muted">{{ review.created_at|naturaltime }}</div>
+                        </div>
+                        {{ review.comment }}
+                    </div>
+                {% empty %}
+                    <p class="text-muted fst-italic">
+                        Este producto aún no tiene reseñas.
+                    </p>
+                {% endfor %}
+
+                {% if reviews|length > reviews_displayed %}
+                    <div class="p-3 mb-1 mt-3">
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#myModal">Ver todas las opiniones.</a>
+                    </div>
+
+                    {% include './modal_ver_resenas.html' %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        // Cambia el slide del carousel al hacer clic en una foto de la lista.
+        function changeCarouselSlide(index) {
+            let i = parseInt(index)
+            $('#myCarousel').carousel(i);
+        }
+
+
+        // Valida que la cantidad ingresada al carrito de compra sea mayor o igual a 1.
+        function validateQuantity(input) {
+            if (input.value < 1) {
+                input.value = 1;
+            }
+        }
+
+
+        // Habilita el uso de tooltips.
+        $(document).ready(function(){
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        });
+
+
+        // Permite que el usuario califique dinámicamente el producto al hacer la reseña.
+        document.addEventListener('DOMContentLoaded', function() {
+            const stars = document.querySelectorAll('.my-star');
+            const ratingInput = document.getElementById('rating');
+
+            stars.forEach(star => {
+                star.addEventListener('click', () => {
+                    const index = star.getAttribute('data-index');
+                    ratingInput.value = parseInt(index) + 1;
+                    markStars(index);
+                });
+            });
+
+            function markStars(index) {
+                stars.forEach((star, i) => {
+                    if (i <= index) {
+                        star.classList.remove('far');
+                        star.classList.add('fas');
+                    } else {
+                        star.classList.remove('fas');
+                        star.classList.add('far');
+                    }
+                });
+            }
+        });
+    </script>
+{% endblock %}

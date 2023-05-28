@@ -3,6 +3,10 @@ tr td {
     vertical-align: middle;
 }
 
+.deletelink {
+    height: 45px !important;
+}
+
 html[data-theme="light"],
 :root {
     --primary: #5F9DF7;

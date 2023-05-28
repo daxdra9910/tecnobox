@@ -1,0 +1,31 @@
+{% load humanize %}
+
+<div id="myModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title fw-bold">¿Qué opinan nuestros clientes del producto {{ product.name }}?</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></butto>
+            </div>
+            <div class="modal-body">
+                {% for review in reviews %}
+                    <div class="border rounded p-3 mb-1 mt-3">
+                        <div class="d-flex justify-content-between">
+                            <div class="mb-1">
+                                {% for i in '12345'|make_list %}
+                                    {% if i|add:'0' <= review.rating %}
+                                        <i class="fas fa-star text-warning"></i>
+                                    {% else %}
+                                        <i class="far fa-star text-warning"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <div class="text-muted">{{ review.created_at|naturaltime }}</div>
+                        </div>
+                        {{ review.comment }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
