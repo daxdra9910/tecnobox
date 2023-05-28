@@ -16,7 +16,11 @@ class ContactUs(View):
         """
         Muestra el formulario de contacto.
         """
-        return render(request, 'shop/contact_us.html')
+        context = {
+            'user' : request.user,
+            'path' : request.path
+        }
+        return render(request, 'shop/contact_us.html', context)
 
 
     def post(self, request):
