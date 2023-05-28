@@ -13,4 +13,8 @@ class AboutUs(View):
         """
         Muestra la página con información sobre la empresa.
         """
-        return render(request, 'shop/about_us.html')
+        context = {
+            'user' : request.user,
+            'path' : request.path
+        }
+        return render(request, 'shop/about_us.html', context)
