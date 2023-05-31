@@ -1,0 +1,35 @@
+{% load static %}
+<a href="#" class="col d-flex flex-column p-2 text-decoration-none text-dark" id="card">
+    <span class="fs-6 text-success align-middle"><img src="{% static 'svg/check.svg' %}" width="20px" class="me-1"/>En stock</span>
+    <img src="{% static 'img/pc_gamer.jpg' %}" width="100%" class="imagen">
+    <div>
+        <img src="{% static 'svg/star.svg' %}" width="20px"/>
+        <img src="{% static 'svg/star.svg' %}" width="20px"/>
+        <img src="{% static 'svg/star.svg' %}" width="20px"/>
+        <img src="{% static 'svg/star.svg' %}" width="20px"/>
+        <img src="{% static 'svg/star.svg' %}" width="20px"/>
+    </div>
+    <span class="fs-6 text-secondary fw-light">Reseñas(4)</span>
+    <p>EX:DISPLAY MSI PRO 16 FLEX-036AU 15.6 MULTITOUCH ALL IN ONE</p>
+    <span class="text-decoration-line-through text-secondary">$499.00</span>
+    <span class="fs-3 fw-bold">$499.00</span>
+</a>
+
+<style>
+    #card {
+        transition: box-shadow 0.2s;
+        transition: transform 0.2s;
+        border-radius: 10px;
+    }
+
+    #card:hover {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        transform: scale(1.01);
+    }
+
+    .imagen {
+        aspect-ratio: 4 / 3;
+        object-fit: scale-down;
+        padding: 10px;
+    }
+</style>
