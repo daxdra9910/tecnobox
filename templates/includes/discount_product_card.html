@@ -1,0 +1,26 @@
+{% load static %}
+{% load humanize %}
+{% load custom_filters %}
+
+<a href="{% url 'shop:detail' product.product.id %}" class="product-card col d-flex flex-column p-2 text-decoration-none text-dark">
+    {% if product.product.stock < 15 %}
+        <span class="text-danger align-middle"><i class="fas fa-check-circle me-1"></i>{{product.product.stock}} disponibles</span>
+    {% else %}
+        <span class="text-success align-middle"><i class="fas fa-check-circle me-1"></i>En stock</span>
+    {% endif %}
+    <img src="{{product.product.photos.first.photo.url}}" width="100%" class="imagen">
+    <div>
+        {% for i in '12345'|make_list %}
+            {% if i|add:'0' <= product.average_rating %}
+                <i class="fas fa-star text-warning"></i>
+            {% else %}
+                <i class="far fa-star text-warning"></i>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <span class="fs-6 text-secondary fw-light">Reseñas ({{product.review_count}})</span>
+    <p>{{product.product.name}}</p>
+    <span class="text-decoration-line-through text-secondary">${{product.product.price|intcomma}}</span>
+    <span class="fs-3 fw-bold">${{ product.product.price|sus:product.discount_value |intcomma }}</span>
+    
+</a>
