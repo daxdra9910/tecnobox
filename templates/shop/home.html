@@ -15,10 +15,10 @@
                     <img src="{% static 'img/banner_home_1.jpg' %}" class="d-block w-100" alt="...">
                   </div>
                   <div class="carousel-item">
-                    <img src="{% static 'img/banner_home_1.jpg' %}" class="d-block w-100" alt="...">
+                    <img src="{% static 'img/banner_home_2.jpg' %}" class="d-block w-100" alt="...">
                   </div>
                   <div class="carousel-item">
-                    <img src="{% static 'img/banner_home_1.jpg' %}" class="d-block w-100" alt="...">
+                    <img src="{% static 'img/banner_home_3.jpg' %}" class="d-block w-100" alt="...">
                   </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
@@ -30,6 +30,8 @@
                   <span class="visually-hidden">Next</span>
                 </button>
             </div>
+            
+            {% include 'includes/addi_bar.html' %}
         
             <section class="mt-5">
                 <div class="d-flex justify-content-between">
@@ -37,10 +39,16 @@
                     <a href="#">Ver todos los productos</a>
                 </div>
                 <hr>
-                {% include 'includes/products_list.html'%}
+                {% include 'includes/discount_products_list.html' with products=products_discount %}
             </section>
-                {% include 'includes/addi_bar.html' %}
-            <p>{{products}}</p>
+            <section class="mt-5">
+              <div class="d-flex justify-content-between">
+                <h4 class="fw-bold">Nuestros últimos productos</h4>
+                <a href="#">Ver todos los productos</a>
+              </div>
+                <hr>
+                {% include 'includes/products_list.html' with products=products %}
+            </section>
         
     </div>
 {% endblock %}
