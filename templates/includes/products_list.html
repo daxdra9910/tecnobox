@@ -1,17 +1,5 @@
-<div class="products">
-    {% include 'includes/product_card.html'%}
-    {% include 'includes/product_card.html'%}
-    {% include 'includes/product_card.html'%}
-    {% include 'includes/product_card.html'%}
-    {% include 'includes/product_card.html'%}
-    {% include 'includes/product_card.html'%}
+<div class="products-grid">
+    {% for product in products %}
+        {% include 'includes/product_card.html' with product=product%}
+    {% endfor %}
 </div>
-
-<style>
-    .products {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 3rem 1rem;
-        box-sizing: border-box;
-    }
-</style>
