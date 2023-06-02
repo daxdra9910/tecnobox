@@ -45,8 +45,6 @@
                     <img src="{% if user.photo %}../../media/{{ user.photo }} {% else %}{% static 'img/default.jpg' %}{% endif %}" width="40" class="rounded-circle dropdown-toggle pointer border border-dark border-2" data-bs-toggle="dropdown" aria-expanded="false" type="button">
                     <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">Mi perfil</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="{% url 'accounts:signout' %}">Cerrar sesión</a></li>
                     </ul>
