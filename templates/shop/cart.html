@@ -1,0 +1,85 @@
+{% extends "../base.html" %}
+
+{% load static %}
+
+{% block title %}Carrito {{ block.super }} {% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="fw-bold">Carrito de Compras</h2>
+    <hr>
+    <!-- Aqui empezamos con la sesion donde se agregan los productos que se van a comprar, con sus diferentes especificaciones -->
+    <div class="row">
+      <div class="col-md-8">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Detalle</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%for product in products%}
+            <tr>
+              <td>
+                <img src="{{product.product.photos.first.photo.url}}" alt="Imagen del Producto" class="img-thumbnail">
+              </td>
+              <td>
+                <p>{{product.product.name}}</p>
+                <p>{{product.product.description}}</p>
+              </td>
+              <td>{{product.product.price}}</td>
+              <td>
+                <input type="number" class="form-control" value="1">
+              </td>
+              <td>500.000</td>
+              <td>
+                <button class="btn btn-oval  btn-sm" title="Eliminar"> <i class="fas fa-trash-alt" style="color: #ff0000;"></i></button>
+              </td>
+            </tr>
+            {%endfor%}
+          </tbody>
+        </table>
+
+        <!-- En esta parte agrego los dos botones (Continuar Compra y Vaciar carrito) -->
+        <div class="text-start m-5">
+          <button class="btn bg-custom1 m-1 btn-oval" >Continuar Comprando</button>
+          <button class="btn btn-danger border-0 btn-oval" style="background-color: black;">Vaciar Carrito</button>
+        </div>
+      </div>
+
+      <!-- En esta sesion agrego el elemento de Resumen de compra, utilizando un atributo card -->
+      <div class="col-md-4">
+        <div class="card border-0" style="background-color: #F5F7FF;">
+          <div class="card-body">
+            <h5 class="card-title">Resumen de Compra</h5>
+            <table class="table">
+              <tbody>
+                <tr>
+                  <th>Subtotal:</th>
+                  <td>{{subtotal}}</td>
+                </tr>
+                <tr>
+                  <th>Envío:</th>
+                  <td>500.000</td>
+                </tr>
+                <tr>
+                  <th>Impuestos:</th>
+                  <td>{{impuestos}}</td>
+                </tr>
+                <tr>
+                  <th>Total:</th>
+                  <td>{{total}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <button class="btn btn-primary btn-oval border-0 btn-block" style="background-color: #F15B41; border-radius: 50px;">Pagar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
