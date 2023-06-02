@@ -1,5 +1,5 @@
-from django.shortcuts import get_object_or_404,render
-from django.db.models import Avg, Count, Sum
+from django.shortcuts import render
+from django.db.models import Avg, Count, Sum, Max
 from django.views import View
 
 from apps.shop.models import Product, ProductDiscount, ShoppingCartProduct
@@ -40,15 +40,22 @@ class Home(View):
             )[:12]
         
         # Carrito de compras
-        count_cart_products = ShoppingCartProduct.objects.filter(
-            cart__user=user,
-            cart__is_active=True
-        ).aggregate(total_productos=Sum('amount'))
+        
+        count_cart_products = {}
+        if user.is_authenticated:
+            count_cart_products = ShoppingCartProduct.objects.filter(
+              cart__user=user,
+               cart__is_active=True
+            ).aggregate(
+                total_productos=Sum('amount'),
+                cart_id=Max('cart_id')
+                )
 
 
         context = {
             'user': user,
-            'count_cart_products' : count_cart_products['total_productos'] or 0,
+            'count_cart_products' : count_cart_products.get('total_productos', 0),
+            'cart_id' : count_cart_products.get('cart_id', 0),
             'path': request.path,
             'products_discount': products_discount,
             'products' : products,
