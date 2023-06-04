@@ -12,13 +12,13 @@
             <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                   <div class="carousel-item active">
-                    <img src="{% static 'img/carousel1.jpg' %}" class="d-block w-100" alt="...">
+                    <img src="{% static 'img/banner_home_1.jpg' %}" class="d-block w-100" alt="...">
                   </div>
                   <div class="carousel-item">
-                    <img src="{% static 'img/carousel2.jpg' %}" class="d-block w-100" alt="...">
+                    <img src="{% static 'img/banner_home_2.jpg' %}" class="d-block w-100" alt="...">
                   </div>
                   <div class="carousel-item">
-                    <img src="{% static 'img/carousel3.jpg' %}" class="d-block w-100" alt="...">
+                    <img src="{% static 'img/banner_home_3.jpg' %}" class="d-block w-100" alt="...">
                   </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
@@ -30,104 +30,47 @@
                   <span class="visually-hidden">Next</span>
                 </button>
             </div>
+            
+            {% include 'includes/addi_bar.html' %}
         
             <section class="mt-5">
                 <div class="d-flex justify-content-between">
                     <h4 class="fw-bold">Nuestras últimas ofertas</h4>
                     <a href="#">Ver todos los productos</a>
                 </div>
-                <div class="grid row justify-content-center gap-1">
-                    <div class="col-sm d-flex flex-column border p-2" style="width:225px;">
-                        <span class="fs-6 text-success align-middle"><img src="{% static 'svg/check.svg' %}" width="20px" class="me-1"/>En stock</span>
-                        <img src="{% static 'img/pc_gamer.jpg' %}" width="100px" class="align-self-center my-2">
-                        <div>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <span class="fs-6">Reseñas(4)</span>
-                        </div>
-                        <p>EX:DISPLAY MSI PRO 16 FLEX-036AU 15.6 MULTITOUCH ALL IN ONE</p>
-                        <span class="text-decoration-line-through text-secondary">$499.00</span>
-                        <span class="fs-3 fw-bold">$499.00</span>
-                    </div>
-                    <div class="col-sm d-flex flex-column border p-2" style="width:225px;">
-                        <span class="fs-6 text-success align-middle"><img src="{% static 'svg/check.svg' %}" width="20px" class="me-1"/>En stock</span>
-                        <img src="{% static 'img/pc_gamer.jpg' %}" width="100px" class="align-self-center my-2">
-                        <div>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <span class="fs-6">Reseñas(4)</span>
-                        </div>
-                        <p>EX:DISPLAY MSI PRO 16 FLEX-036AU 15.6 MULTITOUCH ALL IN ONE</p>
-                        <span class="text-decoration-line-through text-secondary">$499.00</span>
-                        <span class="fs-3 fw-bold">$499.00</span>
-                    </div>
-                    <div class="col-sm d-flex flex-column border p-2" style="width:225px;">
-                        <span class="fs-6 text-success align-middle"><img src="{% static 'svg/check.svg' %}" width="20px" class="me-1"/>En stock</span>
-                        <img src="{% static 'img/pc_gamer.jpg' %}" width="100px" class="align-self-center my-2">
-                        <div>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <span class="fs-6">Reseñas(4)</span>
-                        </div>
-                        <p>EX:DISPLAY MSI PRO 16 FLEX-036AU 15.6 MULTITOUCH ALL IN ONE</p>
-                        <span class="text-decoration-line-through text-secondary">$499.00</span>
-                        <span class="fs-3 fw-bold">$499.00</span>
-                    </div>
-                    <div class="col-sm d-flex flex-column border p-2" style="width:225px;">
-                        <span class="fs-6 text-success align-middle"><img src="{% static 'svg/check.svg' %}" width="20px" class="me-1"/>En stock</span>
-                        <img src="{% static 'img/pc_gamer.jpg' %}" width="100px" class="align-self-center my-2">
-                        <div>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <span class="fs-6">Reseñas(4)</span>
-                        </div>
-                        <p>EX:DISPLAY MSI PRO 16 FLEX-036AU 15.6 MULTITOUCH ALL IN ONE</p>
-                        <span class="text-decoration-line-through text-secondary">$499.00</span>
-                        <span class="fs-3 fw-bold">$499.00</span>
-                    </div>
-                    <div class="col-sm d-flex flex-column border p-2" style="width:225px;">
-                        <span class="fs-6 text-success align-middle"><img src="{% static 'svg/check.svg' %}" width="20px" class="me-1"/>En stock</span>
-                        <img src="{% static 'img/pc_gamer.jpg' %}" width="100px" class="align-self-center my-2">
-                        <div>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <span class="fs-6">Reseñas(4)</span>
-                        </div>
-                        <p>EX:DISPLAY MSI PRO 16 FLEX-036AU 15.6 MULTITOUCH ALL IN ONE</p>
-                        <span class="text-decoration-line-through text-secondary">$499.00</span>
-                        <span class="fs-3 fw-bold">$499.00</span>
-                    </div>
-                    <div class="col-sm d-flex flex-column border p-2" style="width:225px;">
-                        <span class="fs-6 text-success align-middle"><img src="{% static 'svg/check.svg' %}" width="20px" class="me-1"/>En stock</span>
-                        <img src="{% static 'img/pc_gamer.jpg' %}" width="100px" class="align-self-center my-2">
-                        <div>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <img src="{% static 'svg/star.svg' %}" width="20px"/>
-                            <img src="{% static 'svg/unstar.svg' %}" width="20px"/>
-                            <img src="{% static 'svg/unstar.svg' %}" width="20px"/>
-                            <span class="fs-6">Reseñas(4)</span>
-                        </div>
-                        <p>EX:DISPLAY MSI PRO 16 FLEX-036AU 15.6 MULTITOUCH ALL IN ONE</p>
-                        <span class="text-decoration-line-through text-secondary">$499.00</span>
-                        <span class="fs-3 fw-bold">$499.00</span>
-                    </div>
+                <hr>
+                {% include 'includes/discount_products_list.html' with products=products_discount %}
+            </section>
+            <section class="row d-flex justify-content-around mt-5">
+              <div class="col-sm-4 d-flex flex-column justify-content-center text-center">
+                  <div class="bg-danger rounded-circle d-flex justify-content-center align-items-center m-auto mb-3" style="width: 80px; height: 80px;">
+                    <i class="fas fa-headset fa-lg text-light fs-1"></i>
+                  </div>
+                <span class="fw-bold">Soporte del producto</span>
+                <p class="text-secondary fw-light">Hasta 2 años de garantía disponible para su tranquilidad.</p>
+              </div>
+              <div class="col-sm-4 d-flex flex-column justify-content-center text-center">
+                <div class="bg-danger rounded-circle d-flex justify-content-center align-items-center m-auto mb-3" style="width: 80px; height: 80px;">
+                  <i class="fas fa-user-circle fa-lg text-light fs-1"></i>
                 </div>
+                <span class="fw-bold">Cuenta personal</span>
+                <p class="text-secondary fw-light">Con grandes descuentos, entrega gratuita y soporte dedicado.</p>
+              </div>
+              <div class="col-sm-4 d-flex flex-column justify-content-center text-center">
+                <div class="bg-danger rounded-circle d-flex justify-content-center align-items-center m-auto mb-3" style="width: 80px; height: 80px;">
+                  <i class="fas fa-percent fa-lg text-light fs-1"></i>
+                </div>
+                <span class="fw-bold">Increíbles ahorros</span>
+                <p class="text-secondary fw-light">Hasta un 70% de descuento en nuevos productos.</p>
+              </div>
+            </section>
+            <section class="mt-5">
+              <div class="d-flex justify-content-between">
+                <h4 class="fw-bold">Nuestros últimos productos</h4>
+                <a href="#">Ver todos los productos</a>
+              </div>
+                <hr>
+                {% include 'includes/products_list.html' with products=products %}
             </section>
         
     </div>

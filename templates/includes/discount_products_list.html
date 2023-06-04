@@ -1,0 +1,5 @@
+<div class="products-grid">
+    {% for product in products %}
+        {% include 'includes/discount_product_card.html' with product=product%}
+    {% endfor %}
+</div>

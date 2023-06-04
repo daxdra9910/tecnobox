@@ -3,6 +3,8 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.shortcuts import redirect, render
 from django.views import View
+from django.db.models import Sum, Max
+from apps.shop.models import ShoppingCartProduct
 
 
 
@@ -16,8 +18,24 @@ class ContactUs(View):
         """
         Muestra el formulario de contacto.
         """
+        # User
+        user = request.user
+
+        # Carrito de compras
+        count_cart_products = {}
+        if user.is_authenticated:
+            count_cart_products = ShoppingCartProduct.objects.filter(
+              cart__user=user,
+               cart__is_active=True
+            ).aggregate(
+                total_productos=Sum('amount'),
+                cart_id=Max('cart_id')
+                )
+
         context = {
-            'user' : request.user,
+            'user' : user,
+            'count_cart_products' : count_cart_products.get('total_productos', 0),
+            'cart_id': count_cart_products.get('cart_id', 0),
             'path' : request.path
         }
         return render(request, 'shop/contact_us.html', context)

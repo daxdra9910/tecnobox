@@ -17,7 +17,7 @@
     {% block resources %} {% endblock %}
 </head>
 <body>
-    {% include "includes/navbar.html" with path=path user=user %}
+    {% include "includes/navbar.html" with path=path user=user cart=count_cart_products cart_id=cart_id%}
 
     {% for message in messages %}
     <div class="alert {% if message.tags == 'error' %} alert-danger {% else %} alert-{{ message.tags }} {% endif %} alert-dismissible fade show" role="alert">

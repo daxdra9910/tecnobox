@@ -24,7 +24,9 @@ class Detail(View):
         # Determinamos si el usuario autenticado ha comprado ese producto alguna vez.
         # Solo los usuarios que han adquirido el producto pueden dejar una reseña.
         user = request.user
-        has_bought = PurchaseOrder.objects.filter(user=user, status='D', shopping_cart__shoppingcartproduct__product=product).exists()
+        has_bought = False
+        if user.is_authenticated:
+            has_bought = PurchaseOrder.objects.filter(user=user, status='D', shopping_cart__shoppingcartproduct__product=product).exists()
 
         # Obtenemos las fotografías del producto.
         photos = product.photos.all()
@@ -53,7 +55,9 @@ class Detail(View):
         total_reviews = Review.objects.filter(product=product).count()
 
         # El usuario solo puede reseñar una vez un producto.
-        has_reviewed = Review.objects.filter(user=user, product=product).exists()
+        has_reviewed = False
+        if user.is_authenticated:
+            has_reviewed = Review.objects.filter(user=user, product=product).exists()
 
         # Obtenemos los descuentos del producto.
         discounts = product.discounts.all()
