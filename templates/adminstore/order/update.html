@@ -1,0 +1,35 @@
+<div class="modal fade" id="update_{{ order.pk }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="exampleModalLabel"><i class="fas fa-pen"></i> &nbsp; Modificar orden #{{ order.pk|stringformat:'06d' }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{% url 'adminstore:orders' %}" method="POST" class="text-start">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <input type="hidden" name="_method" value="put">
+                            <input type="hidden" name="id" value="{{ order.pk }}">
+                            <div class="my-2">
+                                <label for="name" class="form-label fw-bold">Estado de la orden</label>
+                                <select class="form-select" id="status" name="status" aria-label="Default select example" required>
+                                    <option class="text-muted" selected>Seleccione una opción...</option>
+                                    <option value="P">En proceso</option>
+                                    <option value="S">Enviada</option>
+                                    <option value="D">Entregada</option>
+                                    <option value="C">Cancelada</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-warning">Modificar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,109 @@
+{% extends "../../base.html" %}
+
+
+{% load static %}
+{% load humanize %}
+
+
+{% block title %}Métricas {{ block.super }} {% endblock %}
+
+
+{% block content %}
+    {% include '../includes/admin_navbar.html' %}
+
+    <div class="container mb-5">
+        <div class="row my-5">
+            <div class="admin-title">
+                <h1 class="fw-bold">Panel de administración</h1>
+                <small>{{ now }}</small>
+            </div>
+        </div>
+        <div class="row me-auto">
+            <div class="col-sm-auto">
+                <div class="shadow-sm p-3 mb-5 bg-body rounded text-muted">
+                    <div>Número de<br>usuarios</div>
+                    <div class="fs-3 fw-bold">{% if num_users %} {{ num_users }} {% else %} 0 {% endif %}</div>
+                </div>
+            </div>
+            <div class="col-sm-auto">
+                <div class="shadow-sm p-3 mb-5 bg-body rounded text-muted">
+                    <div>Número de<br>ventas</div>
+                    <div class="fs-3 fw-bold">{% if num_orders %} {{ num_orders }} {% else %} 0 {% endif %}</div>
+                </div>
+            </div>
+            <div class="col-sm-auto">
+                <div class="shadow-sm p-3 mb-5 bg-body rounded text-muted">
+                    <div>Unidades<br>vendidas</div>
+                    <div class="fs-3 fw-bold">{% if num_units %} {{ num_units }} {% else %} 0 {% endif %}</div>
+                </div>
+            </div>
+            <div class="col-sm-auto">
+                <div class="shadow-sm p-3 mb-5 bg-body rounded text-muted">
+                    <div>Ganancias<br>obtenidas</div>
+                    <div class="fs-3 fw-bold">$ {% if total_sales %} {{ total_sales|floatformat:'0'|intcomma }} {% else %} 0 {% endif %}</div>
+                </div>
+            </div>
+            <div class="col-sm-auto">
+                <div class="shadow-sm p-3 mb-5 bg-body rounded text-muted">
+                    <div>Impuestos<br>recaudados</div>
+                    <div class="fs-3 fw-bold">$ {% if total_taxes %} {{ total_taxes|floatformat:'0'|intcomma }} {% else %} 0 {% endif %}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="shadow-sm p-3 mb-5 bg-body rounded text-muted">
+                    <div>Promedio de<br>calificaciones</div>
+                    <div class="fs-3 fw-bold">{% if average_rating %} {{ average_rating|floatformat:'1' }} {% else %} 0 {% endif %}</div>
+                    <div>
+                        {% for i in '12345'|make_list %}
+                            {% if i|add:'0' > average_rating and i|add:'-1' < average_rating %}
+                                <i class="fas fa-star-half-alt text-warning"></i>
+                            {% elif i|add:'0' <= average_rating %}
+                                <i class="fas fa-star text-warning"></i>
+                            {% else %}
+                                <i class="far fa-star text-warning"></i>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <canvas class="my-2 chartjs-render-monitor" id="bar-chart-2" height="100"></canvas>
+            </div>
+            <div class="col-sm-5">
+                <canvas class="my-2 chartjs-render-monitor" id="bar-chart-3" height="100"></canvas>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <canvas class="my-4 chartjs-render-monitor" id="line-chart" height="120"></canvas>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <canvas class="my-2 chartjs-render-monitor" id="bar-chart-1" height="100"></canvas>
+            </div>
+            <div class="col-sm-6 mb-5">
+                <div class="px-5 mx-5">
+                    <canvas class="my-2 chartjs-render-monitor" id="pie-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    {{ earnings_per_month|json_script:'earnings_per_month' }}
+    {{ top_products|json_script:'top_products' }}
+    {{ top_categories|json_script:'top_categories' }}
+    {{ top_brands|json_script:'top_brands' }}
+    {{ top_cities|json_script:'top_cities' }}
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script id="earnings_per_month" src="{% static 'js/dashboard/charts.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% load humanize %}
+
+<div class="modal fade" id="info_{{ order.pk }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="exampleModalLabel">órden de compra #{{ order.pk|stringformat:'06d' }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <table class="table table-responsive table-borderless table-sm table-hover align-middle">
+                                <tr>
+                                    <th class="text-start">Fecha</th>
+                                    <td class="text-start">{{ order.created_at|date:'d/m/Y' }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-start">Cliente</th>
+                                    <td class="text-start">{{ order.user.get_full_name }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-start">Correo electrónico</th>
+                                    <td class="text-start">{{ order.user.email }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-start">Método de pago</th>
+                                    <td class="text-start">{{ order.payment_method.name }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-start">Dirección de entrega</th>
+                                    <td class="text-start">{{ order.shipping_address.address }}, {{ order.shipping_address.city.name }}, {{ order.shipping_address.region.name }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-start">Teléfono de contacto</th>
+                                    <td class="text-start">{{ order.shipping_address.phone }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-start">Subtotal</th>
+                                    <td class="text-start">${{ order.subtotal|intcomma }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-start">Impuestos</th>
+                                    <td class="text-start">${{ order.taxes|intcomma }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-start">Total</th>
+                                    <td class="text-start">${{ order.total|intcomma }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-start">Estado</th>
+                                    <td class="text-start">
+                                        {% if order.status == 'P' %}
+                                            <span class="badge rounded-pill text-bg-secondary"><small>en proceso</small></span>
+                                        {% elif order.status == 'S' %}
+                                            <span class="badge rounded-pill text-bg-warning"><small>enviada</small></span>
+                                        {% elif order.status == 'D' %}
+                                            <span class="badge rounded-pill text-bg-success"><small>entregada</small></span>
+                                        {% elif order.status == 'C' %}
+                                            <span class="badge rounded-pill text-bg-danger"><small>cancelada</small></span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

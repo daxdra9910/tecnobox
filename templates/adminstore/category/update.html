@@ -1,0 +1,29 @@
+<div class="modal fade" id="update_{{ category.pk }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="exampleModalLabel"><i class="fas fa-pen"></i> &nbsp; Modificar categoría {{ category.name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{% url 'adminstore:categories' %}" method="POST" class="text-start">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <input type="hidden" name="_method" value="put">
+                            <input type="hidden" name="id" value="{{ category.pk }}">
+                            <div class="my-2">
+                                <label for="name" class="form-label fw-bold">Nombre de la categoría</label>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ category.name }}" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-warning">Modificar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

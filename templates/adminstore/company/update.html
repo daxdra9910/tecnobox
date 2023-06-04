@@ -1,0 +1,51 @@
+<div class="modal fade" id="update_{{ company.pk }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="exampleModalLabel"><i class="fas fa-pen"></i> &nbsp; Modificar información de la tienda</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="my-form" action="{% url 'adminstore:company' %}" method="POST" class="text-start">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <input type="hidden" name="_method" value="put">
+                            <input type="hidden" name="id" value="{{ company.pk }}">
+                            <div class="my-2">
+                                <label for="rut" class="form-label fw-bold">RUT</label>
+                                <input type="number" class="form-control" id="rut" name="rut" value="{{ company.rut }}" required>
+                            </div>
+                            <div class="my-2">
+                                <label for="name" class="form-label fw-bold">Nombre de la tienda</label>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ company.name }}" required>
+                            </div>
+                            <div class="my-2">
+                                <label for="address" class="form-label fw-bold">Dirección</label>
+                                <input type="text" class="form-control" id="address" name="address" value="{{ company.address }}" required>
+                            </div>
+                            <div class="my-2">
+                                <label for="phone" class="form-label fw-bold">Teléfono</label>
+                                <input type="number" class="form-control" id="phoneu" name="phone" value="{{ company.phone }}" onkeyup="validate_phone()" required>
+                                <small class="text-danger" id="phone-help"></small>
+                            </div>
+                            <div class="my-2">
+                                <label for="email" class="form-label fw-bold">Correo electrónico</label>
+                                <input type="email" class="form-control" id="emailu" name="email" value="{{ company.email }}" onkeyup="validate_email()" required>
+                                <small class="text-danger" id="email-help"></small>
+                            </div>
+                            <div class="my-2">
+                                <label for="schedule" class="form-label fw-bold">Horario de atención</label>
+                                <textarea class="form-control" id="schedule" name="schedule" rows="3" required>{{ company.schedule }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-warning">Modificar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

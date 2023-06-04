@@ -1,12 +1,40 @@
-const ctxLine = document.getElementById('line-chart');
-const ctxPie = document.getElementById('pie-chart');
-const ctxBar = document.getElementById('bar-chart');
-
-
 Chart.defaults.color = '#9A9A9A';
-
 Chart.defaults.font.size = 13;
 Chart.defaults.font.family = 'Karla';
+
+
+
+
+// GRÁFICO DE LÍNEAS.
+
+const ctxLine = document.getElementById('line-chart');
+let chartData = JSON.parse(document.getElementById('earnings_per_month').textContent);
+const allMonths = Array.from(Array(12).keys()).map(function(month) {
+    return month + 1;
+});
+
+// Llena los meses faltantes con 0.
+for (let i = 0; i < allMonths.length; i++) {
+    var monthExists = false;
+    for (const element of chartData) {
+        if (element[0] === allMonths[i]) {
+            monthExists = true;
+            break;
+        }
+    }
+    if (!monthExists) {
+        chartData.push([allMonths[i], 0]);
+    }
+}
+
+// Ordena los datos por mes.
+chartData.sort(function(a, b) {
+    return a[0] - b[0];
+});
+
+let earnings = chartData.map(function(item) {
+    return item[1];
+});
 
 
 function gradient(context) {
@@ -24,22 +52,22 @@ const lineChart = new Chart(ctxLine, {
 
     data: {
         // Axis X.
-        labels: ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN',
-                 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC'],
+        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
 
         datasets: [
             {
-                label: 'Laptop',
+                label: 'Dinero total obtenido',
                 // Axis Y.
-                data: [500, 450, 268, 526, 380, 500, 450, 268, 526, 380, 290, 401],
+                data: earnings,
 
                 // Styles.
                 borderColor: 'rgb(255, 99, 132)',
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
                 pointStyle: 'circle',
-                pointRadius: 8,
+                pointRadius: 4,
                 pointHoverRadius: 13,
-                tension: 0.2,
+                tension: 0.25,
                 fill: {
                     target: 'origin',
                     above: function(context) {
@@ -53,29 +81,6 @@ const lineChart = new Chart(ctxLine, {
                     },
                 },
             },
-            {
-                label: 'Desktop',
-                data: [120, 321, 432, 154, 543, 765, 102, 134, 245, 543, 111, 635],
-
-                borderColor: 'rgb(99, 255, 132)',
-                backgroundColor: 'rgba(99, 255, 132, 0.5)',
-                pointStyle: 'circle',
-                pointRadius: 8,
-                pointHoverRadius: 13,
-                tension: 0.2,
-                fill: {
-                    target: 'origin',
-                    above: function(context) {
-                        const chart = context.chart;
-                        const {ctx, chartArea} = chart;
-                        if (!chartArea) { return; }
-                        let gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-                        gradient.addColorStop(1, 'rgba(99, 255, 132, 0.25)');
-                        gradient.addColorStop(0, 'rgba(0, 255, 0, 0)');
-                        return gradient;
-                    },
-                },
-            },
         ],
     },
 
@@ -84,7 +89,10 @@ const lineChart = new Chart(ctxLine, {
         plugins: {
             title: {
                 display: true,
-                text: 'Ventas mensuales por categoría',
+                text: 'Ventas mensuales',
+                font: {
+                    size: 20,
+                }
             },
         },
         scales: {
@@ -99,6 +107,9 @@ const lineChart = new Chart(ctxLine, {
                 },
                 ticks: {
                     padding: 15,
+                    callback: function(value, index, ticks) {
+                        return '$' + value;
+                    }
                 },
             },
         },
@@ -106,22 +117,45 @@ const lineChart = new Chart(ctxLine, {
 });
 
 
+
+
+// GRÁFICO CIRCULAR
+
+const ctxPie = document.getElementById('pie-chart');
+chartData = JSON.parse(document.getElementById('top_cities').textContent);
+
+let cities = chartData.map(function(item) {
+    return item[0];
+});
+
+let num_users = chartData.map(function(item) {
+    return item[1];
+});
+
 const pieChart = new Chart(ctxPie, {
     type: 'doughnut',
 
     data: {
-        labels: ['A', 'B', 'C'],
+        labels: cities,
 
         datasets: [{
-            label: 'Top 3 productos más vendidos',
-            data: [500, 450, 268],
-
-            // Styles.
+            label: 'Top ciudades',
+            data: num_users,
             backgroundColor: [
-                'rgb(255, 99, 132)',
-                'rgb(54, 162, 235)',
-                'rgb(255, 205, 86)'
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 205, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
             ],
+            borderColor: [
+                'rgb(255, 99, 132)',
+                'rgb(255, 159, 64)',
+                'rgb(255, 205, 86)',
+                'rgb(75, 192, 192)',
+                'rgb(54, 162, 235)',
+            ],
+            borderWidth: 1,
             hoverOffset: 4,
         }],
     },
@@ -137,7 +171,10 @@ const pieChart = new Chart(ctxPie, {
                 },
                 title: {
                     display: true,
-                    text: 'Top 3 productos más vendidos',
+                    text: 'Top ciudades',
+                    font: {
+                        size: 20,
+                    }
                 },
             },
         },
@@ -145,25 +182,188 @@ const pieChart = new Chart(ctxPie, {
 });
 
 
-const barChart = new Chart(ctxBar, {
+
+
+// GRÁFICO DE BARRAS - TOP 5 PRODUCTOS
+
+const ctxBar1 = document.getElementById('bar-chart-1');
+chartData = JSON.parse(document.getElementById('top_products').textContent);
+
+let products = chartData.map(function(item) {
+    return item[0];
+});
+
+let units = chartData.map(function(item) {
+    return item[1];
+});
+
+
+const barChart1 = new Chart(ctxBar1, {
     type: 'bar',
 
     data: {
-        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
+        labels: products,
 
         datasets: [{
-            label: 'Ventas por mes',
-            data: [500, 450, 268, 640, 321, 120],
+            label: 'Unidades vendidas',
+            data: units,
 
             // Styles.
-            backgroundColor: 'rgba(255, 159, 64, 0.2)',
-            borderColor: 'rgb(255, 159, 64)',
-            borderWidth: 1
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 205, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+            ],
+            borderColor: [
+                'rgb(255, 99, 132)',
+                'rgb(255, 159, 64)',
+                'rgb(255, 205, 86)',
+                'rgb(75, 192, 192)',
+                'rgb(54, 162, 235)',
+            ],
+            borderWidth: 1,
         }],
     },
 
     options: {
         responsive: true,
         indexAxis: 'y',
+        plugins: {
+            title: {
+                display: true,
+                text: 'Top productos más vendidos',
+                font: {
+                    size: 20,
+                }
+            },
+        },
+    }
+});
+
+
+
+
+// GRÁFICO DE BARRAS - TOP 5 CATEGORIAS
+
+const ctxBar2 = document.getElementById('bar-chart-2');
+const chartData1 = JSON.parse(document.getElementById('top_categories').textContent);
+
+let categories = chartData1.map(function(item) {
+    return item[0];
+});
+
+let categories_units = chartData1.map(function(item) {
+    return item[1];
+});
+
+
+const barChart2 = new Chart(ctxBar2, {
+    type: 'bar',
+
+    data: {
+        labels: categories,
+
+        datasets: [
+            {
+                label: 'Categorías más vendidas',
+                data: categories_units,
+
+                // Styles.
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 205, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                ],
+                borderColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(255, 159, 64)',
+                    'rgb(255, 205, 86)',
+                    'rgb(75, 192, 192)',
+                    'rgb(54, 162, 235)',
+                ],
+                borderWidth: 1,
+            },
+        ],
+    },
+
+    options: {
+        responsive: true,
+        indexAxis: 'y',
+        plugins: {
+            title: {
+                display: true,
+                text: 'Top categorias más vendidas',
+                font: {
+                    size: 20,
+                }
+            },
+        },
+    }
+});
+
+
+
+
+// GRÁFICO DE BARRAS - TOP 5 MARCAS
+
+const ctxBar3 = document.getElementById('bar-chart-3');
+const chartData2 = JSON.parse(document.getElementById('top_brands').textContent);
+
+let brands = chartData2.map(function(item) {
+    return item[0];
+});
+
+let brands_units = chartData2.map(function(item) {
+    return item[1];
+});
+
+
+const barChart3 = new Chart(ctxBar3, {
+    type: 'bar',
+
+    data: {
+        labels: brands,
+
+        datasets: [
+            {
+                label: 'Marcas más vendidas',
+                data: brands_units,
+
+                // Styles.
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 205, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                ],
+                borderColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(255, 159, 64)',
+                    'rgb(255, 205, 86)',
+                    'rgb(75, 192, 192)',
+                    'rgb(54, 162, 235)',
+                ],
+                borderWidth: 1,
+            },
+        ],
+    },
+
+    options: {
+        responsive: true,
+        indexAxis: 'y',
+        plugins: {
+            title: {
+                display: true,
+                text: 'Top marcas más vendidas',
+                font: {
+                    size: 20,
+                }
+            },
+        },
     }
 });

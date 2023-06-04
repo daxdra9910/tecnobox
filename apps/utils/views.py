@@ -9,21 +9,6 @@ from apps.accounts.models import City
 
 
 
-class Metrics(LoginRequiredMixin, View):
-    """
-    Tablero con las métricas más importantes de la tienda.
-    """
-    login_url = reverse_lazy('accounts:signin')
-
-    def get(self, request):
-        """
-        Muestra un conjunto de gráficos.
-        """
-        return render(request, 'admin/metrics.html')
-
-
-
-
 class CitiesByRegion(View):
     """
     Muestra un objeto JSON con las ciudades de un departamento dado.
@@ -31,7 +16,7 @@ class CitiesByRegion(View):
     """
 
     def get(self, request, region_id):
-        cities = City.objects.filter(region=region_id, is_active=True)
+        cities = City.objects.filter(region=region_id, is_active=True).order_by('name')
         data = []
 
         for city in cities:

@@ -1,0 +1,107 @@
+<div class="modal fade" id="update_{{ product.pk }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold text-start" id="exampleModalLabel"><i class="fas fa-pen"></i> &nbsp; Modificar {{ product.name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{% url 'adminstore:products' %}" method="POST" class="text-start" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <input type="hidden" name="_method" value="put">
+                            <input type="hidden" name="id" value="{{ product.pk }}">
+                            <div class="mt-2">
+                                <h3 class="fs-6 fw-bold">Datos del producto</h3>
+                            </div>
+                            <div class="my-2">
+                                <select class="form-select form-select-sm" id="brand" name="brand" aria-label=".form-select-sm example" required>
+                                    <option value="" class="text-muted" selected>Selecciona la marca...</option>
+                                    {% for brand in brands %}
+                                        <option value="{{ brand.pk }}" {% if product.brand.pk == brand.pk %} selected {% endif %}>{{ brand.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="my-2">
+                                <select class="form-select form-select-sm" id="category" name="category" aria-label=".form-select-sm example" required>
+                                    <option value="" class="text-muted" selected>Selecciona la categoría...</option>
+                                    {% for category in categories %}
+                                        <option value="{{ category.pk }}" {% if product.category.pk == category.pk %} selected {% endif %}>{{ category.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="my-2">
+                                <input type="text" class="form-control form-control-sm" id="name" name="name" placeholder="Nombre del producto" value="{{ product.name }}" required>
+                            </div>
+                            <div class="my-2">
+                                <input type="number" class="form-control form-control-sm" id="price" name="price" placeholder="Precio" oninput="validateQuantity(this)" value="{{ product.price|stringformat:'d' }}"  required>
+                            </div>
+                            <div class="my-2">
+                                <input type="number" class="form-control form-control-sm" id="stock" name="stock" placeholder="Cantidad" oninput="validateQuantity(this)" value="{{ product.stock }}" required>
+                            </div>
+                            <div class="my-2">
+                                <textarea class="form-control form-control-sm" id="description" name="description" rows="4" required>{{ product.description }}</textarea>
+                            </div>
+
+                            <hr class="mt-5">
+
+                            <div class="mt-5 d-flex justify-content-between align-items-center">
+                                <h3 class="fs-6 fw-bold">Descuentos <small class="text-muted">(opcional)</small></h3>
+                                <a href="#" id="add-discount-btn-u">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                            </div>
+                            <div class="my-2" id="discount-container-u">
+                                <div id="discount-select-u" class="d-flex justify-content-between align-items-center">
+                                    <select class="form-select form-select-sm my-2" name="discounts[]" aria-label=".form-select-sm example">
+                                        <option class="text-muted" selected>Selecciona los descuentos...</option>
+                                        {% for discount in discounts %}
+                                            <option value="{{ discount.pk }}">{{ discount.name }} (-{{ discount.percentage }}%)</option>
+                                        {% endfor %}
+                                    </select>
+                                    <a href="#" id="remove-discount-btn-u" class="btn btn-link ps-3 text-danger visually-hidden">
+                                        <i class="fas fa-minus"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="my-2">
+                                {% for discount in product.discounts.all %}
+                                <div class="d-flex justify-content-between px-1">
+                                    <small>{{ discount.discount.name }} (-{{ discount.discount.percentage }}%)</small>
+                                    <div><input type="checkbox" name="delete_discounts[]" value="{{ discount.discount.pk }}"> <small class="text-danger">Eliminar</small></div>
+                                </div>
+                                {% endfor %}
+                            </div>
+
+                            <hr class="mt-5">
+
+                            <div class="mt-5">
+                                <h3 class="fs-6 fw-bold">Fotografías <small class="text-muted">(opcional)</small></h3>
+                                <small class="text-muted">Puede seleccionar múltiples archivos</small>
+                            </div>
+                            <div class="my-2">
+                                <input class="form-control form-control-sm" type="file" name="photos" accept="image/jpeg, image/png" multiple>
+                            </div>
+                            <div class="my-3">
+                                <div class="d-flex justify-content-between">
+                                    {% for photo in product.photos.all %}
+                                    <div class="text-center">
+                                        <img src="../../../media/{{ photo.photo }}" class="img-fluid" width="100" alt="product">
+                                        <br>
+                                        <input type="checkbox" name="delete_photos[]" value="{{ photo.pk }}"> <small class="text-danger">Eliminar</small>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

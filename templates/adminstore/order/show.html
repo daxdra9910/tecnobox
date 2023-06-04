@@ -1,0 +1,161 @@
+{% extends "../../base.html" %}
+
+
+{% load static %}
+{% load humanize %}
+
+
+{% block title %}Gestionar órdenes de compra {{ block.super }} {% endblock %}
+
+
+{% block content %}
+    {% include '../includes/admin_navbar.html' %}
+
+    <div class="container">
+        <div class="row my-5">
+            <div class="admin-title mb-5">
+                <h1 class="fw-bold">Gestionar órdenes</h1>
+                <small>Revisa y actualiza el estado de las órdenes de compra.</small>
+            </div>
+            <div class="col-md-11 col-lg-10 mx-auto">
+                <div class="d-flex flex-row-reverse justify-content-between mb-4">
+                    <form class="d-flex" action="{% url 'adminstore:orders' %}" method="GET">
+                        <input class="form-control me-2" type="search" name="q" placeholder="Buscar" aria-label="Buscar" style="flex: 0 1 300px;">
+                        <button class="btn btn-outline-primary" type="submit">Buscar</button>
+                    </form>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th class="sortable text-center">Orden #</th>
+                                <th class="sortable text-center">Fecha</th>
+                                <th class="sortable text-center">Cliente</th>
+                                <th class="sortable text-center">Subtotal</th>
+                                <th class="sortable text-center">Impuestos</th>
+                                <th class="sortable text-center">Total</th>
+                                <th class="sortable text-center">Estado</th>
+                                <th class="sortable text-center"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in page.object_list %}
+                                <tr>
+                                    <td class="text-center">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#info_{{ order.pk }}" title="Ver detalles">
+                                            {{ order.pk|stringformat:'06d' }}
+                                        </a>
+                                        {% include './info.html' %}
+                                    </td>
+                                    <td class="text-center">{{ order.created_at|date:'d/m/Y' }}</td>
+                                    <td class="text-center">{{ order.user.get_full_name }}</td>
+                                    <td class="text-center">${{ order.subtotal|intcomma }}</td>
+                                    <td class="text-center">${{ order.taxes|intcomma  }}</td>
+                                    <td class="text-center">${{ order.total|intcomma  }}</td>
+                                    <td class="text-center">
+                                        {% if order.status == 'P' %}
+                                            <span class="badge rounded-pill text-bg-secondary"><small>en proceso</small></span>
+                                        {% elif order.status == 'S' %}
+                                            <span class="badge rounded-pill text-bg-warning"><small>enviada</small></span>
+                                        {% elif order.status == 'D' %}
+                                            <span class="badge rounded-pill text-bg-success"><small>entregada</small></span>
+                                        {% elif order.status == 'C' %}
+                                            <span class="badge rounded-pill text-bg-danger"><small>cancelada</small></span>
+                                        {% endif %}
+                                    </td>
+                                    <td class=" text-center">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#update_{{ order.pk }}" title="Modificar estado">
+                                            <i class="fas fa-marker"></i>
+                                        </a>
+                                        {% include './update.html' %}
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td class="text-center text-muted py-5" colspan="9">No hay resultados</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-end mt-4">
+                    {% if request.GET.q %}
+                        <a href="{% url 'adminstore:orders' %}" class="btn btn-outline-secondary">
+                            <small>Ver todo</small>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="row mb-5">
+            <div class="col-md-11 col-lg-10 mx-auto">
+                {% if page.has_other_pages %}
+                    <nav aria-label="Page navigation mt-5">
+                        <ul class="pagination justify-content-center">
+                            {% if page.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page.previous_page_number }}">Anterior</a>
+                                </li>
+                            {% endif %}
+
+                            {% for num in page.paginator.page_range %}
+                                {% if num == page.number %}
+                                    <li class="page-item active" aria-current="page">
+                                        <a class="page-link" href="#">{{ num }}</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if page.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page.next_page_number }}">Siguiente</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        // Ordena una tabla al dar clic sobre el encabezado de una columna.
+        // El encabezado debe tener la clase .sortable.
+        //------ No ordena datos paginados.
+        $(document).ready(function() {
+            $('.sortable').click(function() {
+            let table = $(this).closest('table');
+            let rows = table.find('tbody > tr').get();
+            let index = $(this).index();
+            let sortOrder = $(this).hasClass('asc') ? -1 : 1;
+
+            rows.sort(function(a, b) {
+                let aValue = $(a).find('td').eq(index).text();
+                let bValue = $(b).find('td').eq(index).text();
+
+                if ($.isNumeric(aValue) && $.isNumeric(bValue)) {
+                    return sortOrder * (parseFloat(aValue) - parseFloat(bValue));
+                } else {
+                    return sortOrder * aValue.localeCompare(bValue, undefined, { numeric: true });
+                }
+            });
+
+            table.children('tbody').empty().append(rows);
+            $(this).toggleClass('asc');
+            });
+        });
+
+
+        // Habilita el uso de tooltips.
+        $(document).ready(function(){
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        });
+    </script>
+{% endblock %}

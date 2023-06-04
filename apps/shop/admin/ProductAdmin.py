@@ -46,28 +46,15 @@ class ProductAdmin(BaseModelAdmin):
     """
     inlines = [ProductDiscountInline, ProductPhotoInline]
 
-    list_display = ['title', 'details', 'formatted_price', 'stock', 'photos']
+    list_display = ['title', 'description', 'formatted_price', 'stock']
     list_filter = ['category', 'brand', 'is_active']
     search_fields = ['name', 'category', 'brand', 'price', 'stock', 'is_active']
     ordering = ['name', 'category', 'brand', 'price', 'stock']
     actions = [disable_selected, enable_selected]
 
 
-    def photos(self, obj):
-        products = ProductPhoto.objects.filter(product=obj)
-        html = render_to_string('admin/product_carousel.html', {'products': products})
-        return format_html(html)
-
-
-    def details(self, obj):
-        html = render_to_string('admin/product_description.html', {'description': obj.description})
-        return format_html(html)
-
-
     def title(self, obj):
         return format_html(f'{obj.category} ({obj.brand})<br><br>{obj.name}')
 
 
-    photos.short_description = 'Fotografías'
-    details.short_description = 'Descripción'
     title.short_description = 'Nombre'

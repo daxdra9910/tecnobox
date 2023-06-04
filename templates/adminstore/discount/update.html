@@ -1,0 +1,45 @@
+<div class="modal fade" id="update_{{ discount.pk }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold text-start" id="exampleModalLabel"><i class="fas fa-pen"></i> &nbsp; Modificar descuento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="update-form" action="{% url 'adminstore:discounts' %}" method="POST" class="text-start">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <input type="hidden" name="_method" value="put">
+                            <input type="hidden" name="id" value="{{ discount.pk }}">
+                            <div class="my-2">
+                                <label for="name" class="form-label fw-bold">Nombre del descuento</label>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ discount.name }}" required>
+                            </div>
+                            <div class="my-2">
+                                <label for="percentage" class="form-label fw-bold">Porcentaje del descuento</label>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <input type="number" step="any" class="form-control" id="percentage" name="percentage" value="{{ discount.percentage|stringformat:'i' }}" required>
+                                    <div class="ps-2 fs-6 fw-bold">%</div>
+                                </div>
+                            </div>
+                            <div class="my-2">
+                                <label for="created_at" class="form-label fw-bold">Fecha de inicio</label>
+                                <input type="date" class="form-control date-input" id="created_at" name="created_at" value="{{ discount.created_at|date:'Y-m-d' }}" required>
+                                <small class="date-error text-danger"></small>
+                            </div>
+                            <div class="my-2">
+                                <label for="finish_at" class="form-label fw-bold">Fecha de finalización</label>
+                                <input type="date" class="form-control date-input" id="finish_at" name="finish_at" value="{{ discount.finish_at|date:'Y-m-d' }}" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-warning submit-btn">Modificar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

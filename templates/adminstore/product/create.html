@@ -1,0 +1,84 @@
+<div class="modal fade" id="create" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="exampleModalLabel"><i class="fas fa-plus"></i> &nbsp; Registrar nuevo producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{% url 'adminstore:products' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="mt-2">
+                                <h3 class="fs-6 fw-bold">Datos del producto</h3>
+                            </div>
+                            <div class="my-2">
+                                <select class="form-select form-select-sm" id="brand" name="brand" aria-label=".form-select-sm example" required>
+                                    <option value="" class="text-muted" selected>Selecciona la marca...</option>
+                                    {% for brand in brands %}
+                                        <option value="{{ brand.pk }}">{{ brand.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="my-2">
+                                <select class="form-select form-select-sm" id="category" name="category" aria-label=".form-select-sm example" required>
+                                    <option value="" class="text-muted" selected>Selecciona la categoría...</option>
+                                    {% for category in categories %}
+                                        <option value="{{ category.pk }}">{{ category.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="my-2">
+                                <input type="text" class="form-control form-control-sm" id="name" name="name" placeholder="Nombre del producto" required>
+                            </div>
+                            <div class="my-2">
+                                <input type="number" step="any" class="form-control form-control-sm" id="price" name="price" placeholder="Precio" oninput="validateQuantity(this)" required>
+                            </div>
+                            <div class="my-2">
+                                <input type="number" class="form-control form-control-sm" id="stock" name="stock" placeholder="Cantidad" oninput="validateQuantity(this)" required>
+                            </div>
+                            <div class="my-2">
+                                <textarea class="form-control form-control-sm" id="description" name="description" rows="4" required>Descripción del producto</textarea>
+                            </div>
+
+                            <hr class="mt-5">
+
+                            <div class="mt-5 d-flex justify-content-between align-items-center">
+                                <h3 class="fs-6 fw-bold">Descuentos <small class="text-muted">(opcional)</small></h3>
+                                <a href="#" id="add-discount-btn">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                            </div>
+                            <div class="my-2" id="discount-container">
+                                <div id="discount-select" class="d-flex justify-content-between align-items-center">
+                                    <select class="form-select form-select-sm my-2" name="discounts[]" aria-label=".form-select-sm example">
+                                        <option class="text-muted" selected>Selecciona los descuentos...</option>
+                                        {% for discount in discounts %}
+                                            <option value="{{ discount.pk }}">{{ discount.name }} (-{{ discount.percentage }}%)</option>
+                                        {% endfor %}
+                                    </select>
+                                    <a href="#" id="remove-discount-btn" class="btn btn-link ps-3 text-danger visually-hidden">
+                                        <i class="fas fa-minus"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="mt-5">
+                                <h3 class="fs-6 fw-bold">Fotografías <small class="text-muted">(opcional)</small></h3>
+                                <small class="text-muted">Puede seleccionar múltiples archivos</small>
+                            </div>
+                            <div class="my-2">
+                                <input class="form-control form-control-sm" type="file" name="photos" multiple>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

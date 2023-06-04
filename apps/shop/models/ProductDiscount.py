@@ -33,7 +33,7 @@ class ProductDiscount(models.Model):
 
     def save(self, *args, **kwargs):
         # Calculamos el valor del descuento.
-        self.discount_value = self.product.price * self.discount.percentage / 100
+        self.discount_value = float(self.product.price) * float(self.discount.percentage) / 100
         super().save(*args, **kwargs)
 
 

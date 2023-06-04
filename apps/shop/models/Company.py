@@ -8,6 +8,7 @@ class Company(models.Model):
     """
     Información de la tienda virtual.
     """
+    rut = models.IntegerField(unique=True, verbose_name='RUT')
     name = models.CharField(max_length=75, verbose_name=_('nombre'))
     address = models.CharField(max_length=100, verbose_name=_('dirección'))
     phone = models.CharField(max_length=10, verbose_name=_('teléfono'))
@@ -19,7 +20,7 @@ class Company(models.Model):
 
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.name} ({self.rut})'
 
 
     class Meta:

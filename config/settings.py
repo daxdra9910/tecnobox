@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # user apps
     'apps.accounts.apps.AccountsConfig',
+    'apps.adminstore.apps.AdminstoreConfig',
     'apps.shop.apps.ShopConfig',
     'apps.utils.apps.UtilsConfig',
 ]

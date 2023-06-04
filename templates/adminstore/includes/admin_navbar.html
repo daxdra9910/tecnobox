@@ -1,0 +1,24 @@
+<div>
+    <ul class="nav nav-tabs justify-content-start bg-dark ps-2">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Administración
+            </a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="{% url 'adminstore:metrics' %}">Métricas</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'adminstore:brands' %}">Marcas</a>
+                <a class="dropdown-item" href="{% url 'adminstore:categories' %}">Categorías</a>
+                <a class="dropdown-item" href="{% url 'adminstore:discounts' %}">Descuentos</a>
+                <a class="dropdown-item" href="{% url 'adminstore:products' %}">Productos</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'adminstore:orders' %}">Órdenes</a>
+                <a class="dropdown-item" href="{% url 'adminstore:users' %}">Usuarios</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'adminstore:company' %}">Empresa</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'admin:index' %}">Base de datos</a>
+            </div>
+        </li>
+    </ul>
+</div>
