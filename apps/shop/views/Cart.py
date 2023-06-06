@@ -1,11 +1,16 @@
 from django.views import View
 from django.shortcuts import get_object_or_404,render
+from django.db.models import Sum
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 
 from apps.shop.models import ShoppingCart
 
 from decimal import Decimal
 
-class Cart(View):
+class Cart(LoginRequiredMixin,View):
+
+    login_url = reverse_lazy('accounts:signin')
 
     def get(self, request, cart_id):
 
