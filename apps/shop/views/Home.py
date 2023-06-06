@@ -48,7 +48,7 @@ class Home(View):
                cart__is_active=True
             ).aggregate(
                 total_productos=Sum('amount'),
-                cart_id=Max('cart_id')
+                cart_id=Max('cart__id')
                 )
 
 
