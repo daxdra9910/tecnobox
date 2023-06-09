@@ -20,10 +20,10 @@
                 <a class="nav-link {% if path == '/' %}active{% endif %}" aria-current="page" href="/">Inicio</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Catálogo</a>
+                <a class="nav-link {% if path == '/products/' %}active{% endif %}" href="{% url 'shop:products' %}">Catálogo</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link d-inline-block align-text-middle" href="#"><img src="{% static 'svg/sales.svg' %}" width="15"/>Ofertas</a>
+                <a class="nav-link d-inline-block align-text-middle {% if path == '/discounts/' %}active{% endif %}" href="{% url 'shop:discounts' %}"><img src="{% static 'svg/sales.svg' %}" width="15"/>Ofertas</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link {% if path == '/about-us/' %}active{% endif %}" href="{% url 'shop:about-us' %}">Nosotros</a>
@@ -36,8 +36,13 @@
           {% if user.is_authenticated %}
           <div class="d-flex gap-3">
             <div class="position-relative">
-              <a href="#">
-                  <span class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger">{{cart}}</span>
+              <a href="{% url 'shop:cart' cart_id%}">
+                  <span class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger">
+                    {% if cart %}
+                    {{cart}}
+                    {% else %}
+                  0
+                {% endif %}</span>
                   <img src="{% static 'svg/cart.svg' %}"  alt="Cart" width="40">
               </a> 
              </div>
