@@ -1,5 +1,11 @@
 <div class="products-grid">
-    {% for product in products %}
-        {% include 'includes/product_card.html' with product=product%}
-    {% endfor %}
+    {% if products %}
+        {% for product in products %}
+            {% include 'includes/product_card.html' with product=product%}
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info" role="alert">
+        No hay productos disponibles.
+        </div>
+    {% endif %}
 </div>

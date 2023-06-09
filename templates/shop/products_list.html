@@ -1,0 +1,38 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mt-2 fw-bold">Catálogo</h2>
+  <hr>
+<div class="form-control my-2">
+  <form method="get" action="{% url 'shop:products' %}">
+    <label for="category">Categoría:</label>
+    <select class="form-select" name="category" id="category">
+      <option value="">Todas las categorías</option>
+      {% for category in categories %}
+        <option value="{{ category.id }}" {% if selected_category == category.id %}selected{% endif %}>{{ category.name }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="brand">Marca:</label>
+    <select class="form-select" name="brand" id="brand">
+      <option value="">Todas las marcas</option>
+      {% for brand in brands %}
+        <option value="{{ brand.id }}" {% if selected_brand == brand.id %}selected{% endif %}>{{ brand.name }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="min_price">Precio mínimo:</label>
+    <input class="form-control" type="number" name="min_price" id="min_price" value="{{ min_price }}" min="0">
+
+    <label for="max_price">Precio máximo:</label>
+    <input class="form-control" type="number" name="max_price" id="max_price" value="{{ max_price }}" min="0">
+
+    <button class="btn btn-primary my-2" type="submit">Filtrar</button>
+  </form>
+</div>
+<hr>
+  {% include 'includes/products_list.html' with products=products %}
+</div>
+{% endblock %}
