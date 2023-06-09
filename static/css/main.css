@@ -137,10 +137,12 @@ a {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 15px;
-    box-sizing: border-box;
+    /*box-sizing: border-box;*/
 }
 
 .product-card {
+    width: auto;
+    height: auto;
     justify-content: space-between;
     transition: box-shadow 0.2s;
     transition: border 0.2s;
