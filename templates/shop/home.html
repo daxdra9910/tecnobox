@@ -67,7 +67,7 @@
             <section class="mt-5">
               <div class="d-flex justify-content-between">
                 <h4 class="fw-bold">Nuestros últimos productos</h4>
-                <a href="#">Ver todos los productos</a>
+                <a href="{% url 'shop:products' %}">Ver todos los productos</a>
               </div>
                 <hr>
                 {% include 'includes/products_list.html' with products=products %}
