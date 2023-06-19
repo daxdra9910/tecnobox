@@ -17,7 +17,7 @@
           <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
             <ul class="navbar-nav mb-2 mb-lg-0 fw-semibold gap-lg-3">
               <li class="nav-item">
-                <a class="nav-link {% if path == '/' %}active{% endif %}" aria-current="page" href="/">Inicio</a>
+                <a class="nav-link {% if path == '/' %}active{% endif %}" aria-current="page" href="{% url 'shop:home' %}">Inicio</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link {% if path == '/products/' %}active{% endif %}" href="{% url 'shop:products' %}">Catálogo</a>
@@ -36,13 +36,10 @@
           {% if user.is_authenticated %}
           <div class="d-flex gap-3">
             <div class="position-relative">
-              <a href="{% url 'shop:cart' cart_id%}">
+              <a href="{% url 'shop:cart'%}">
                   <span class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger">
-                    {% if cart %}
-                    {{cart}}
-                    {% else %}
-                  0
-                {% endif %}</span>
+                  {{products_cart_count}}
+                  </span>
                   <img src="{% static 'svg/cart.svg' %}"  alt="Cart" width="40">
               </a> 
              </div>
@@ -50,6 +47,9 @@
                     <img src="{% if user.photo %}../../media/{{ user.photo }} {% else %}{% static 'img/default.jpg' %}{% endif %}" width="40" class="rounded-circle dropdown-toggle pointer border border-dark border-2" data-bs-toggle="dropdown" aria-expanded="false" type="button">
                     <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">Mi perfil</a></li>
+                    {% if user.is_staff %}
+                    <li><a class="dropdown-item" href="{% url 'adminstore:metrics' %}">Administrador</a></li>
+                    {% endif %}
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="{% url 'accounts:signout' %}">Cerrar sesión</a></li>
                     </ul>
