@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from django.db.models import Avg, Count, Sum, Max
+from django.db.models import Avg, Count
 from django.views import View
 
-from apps.shop.models import Product, ProductDiscount, ShoppingCartProduct
+from apps.shop.models import Product, ProductDiscount, ShoppingCart, ShoppingCartProduct
 
 
 class Home(View):
@@ -39,23 +39,25 @@ class Home(View):
             '-created_at'
             )[:12]
         
-        # Carrito de compras
         
-        count_cart_products = {}
         if user.is_authenticated:
-            count_cart_products = ShoppingCartProduct.objects.filter(
-              cart__user=user,
-               cart__is_active=True
-            ).aggregate(
-                total_productos=Sum('amount'),
-                cart_id=Max('cart__id')
-                )
-
+            # Obtener el carrito del usuario
+            try:
+                shopping_cart = ShoppingCart.objects.get(user=user, is_active=True)
+            except ShoppingCart.DoesNotExist:
+                shopping_cart = None
+            
+            # Obtener la cantidad de productos en el carrito
+            if shopping_cart:
+                product_count = ShoppingCartProduct.objects.filter(cart=shopping_cart).count()
+            else:
+                product_count = 0
+        else:
+            product_count = None
 
         context = {
             'user': user,
-            'count_cart_products' : count_cart_products.get('total_productos', 0),
-            'cart_id' : count_cart_products.get('cart_id', 0),
+            'products_cart_count': product_count,
             'path': request.path,
             'products_discount': products_discount,
             'products' : products,
