@@ -1,6 +1,7 @@
 {% extends "../base.html" %}
 
 {% load static %}
+{% load humanize %}
 
 {% block title %}Carrito {{ block.super }} {% endblock %}
 
@@ -11,6 +12,7 @@
     <!-- Aqui empezamos con la sesion donde se agregan los productos que se van a comprar, con sus diferentes especificaciones -->
     <div class="row">
       <div class="col-md-8">
+        {% if products %}
         <table class="table">
           <thead>
             <tr>
@@ -25,31 +27,42 @@
             {%for product in products%}
             <tr>
               <td>
-                <img src="{{product.product.photos.first.photo.url}}" alt="Imagen del Producto" class="img-thumbnail">
+                <a href="{% url 'shop:detail' product.product.id %}">
+                  <img src="{{product.product.photos.first.photo.url}}" alt="Imagen del Producto" class="img-thumbnail">
+                </a>
               </td>
               <td>
                 <p>{{product.product.name}}</p>
                 <p>{{product.product.description}}</p>
               </td>
-              <td>{{product.product.price}}</td>
-              <td class="d-flex align-items-center justify-content-center gap-3">
-                <i class="fas fa-minus text-danger"></i>
-                <span>{{product.amount}}</span>
-                <i class="fas fa-plus text-success"></i>
-              </td>
-              <td>500.000</td>
+              <td>${{product.price_with_discount | intcomma}}</td>
               <td>
-                <button class="btn btn-oval  btn-sm" title="Eliminar"> <i class="fas fa-trash-alt" style="color: #ff0000;"></i></button>
+                <a class="btn btn-oval btn-sm" title="Disminuir" href="{% url 'shop:decrease-quantity' product.product.id %}">
+                  <i class="fas fa-minus text-danger"></i>
+                </a>
+                <span>{{ product.amount }}</span>
+                <a class="btn btn-oval btn-sm" title="Aumentar" href="{% url 'shop:increase-quantity' product.product.id %}">
+                  <i class="fas fa-plus text-success"></i>
+                </a>
+              </td>
+              <td>${{product.subtotal | intcomma}}</td>
+              <td>
+                <a class="btn btn-sm" title="Eliminar" href="{% url 'shop:remove-from-cart' product.product.id %}"> <i class="fas fa-trash-alt" style="color: #ff0000;"></i></a>
               </td>
             </tr>
             {%endfor%}
           </tbody>
         </table>
+        {% else %}
+        <div class="alert alert-secondary" role="alert">
+          Aún no hay productos en tu carrito de compras!
+        </div>
+        {% endif %}
 
         <!-- En esta parte agrego los dos botones (Continuar Compra y Vaciar carrito) -->
-        <div class="text-start m-5">
-          <button class="btn bg-custom1 m-1 btn-oval" >Continuar Comprando</button>
-          <button class="btn btn-danger border-0 btn-oval" style="background-color: black;">Vaciar Carrito</button>
+        <div class="text-start my-5">
+          <a class="btn btn-primary" href="{% url 'shop:home' %}">Continuar Comprando</a>
+          <a class="btn btn-danger {% if products %} {% else %} disabled {% endif%}" href="{% url 'shop:empty-cart' %}">Vaciar Carrito</a>
         </div>
       </div>
 
@@ -61,24 +74,19 @@
             <table class="table">
               <tbody>
                 <tr>
-                  <th>Subtotal:</th>
-                  <td>{{subtotal}}</td>
-                </tr>
-                <tr>
                   <th>Envío:</th>
-                  <td>500.000</td>
-                </tr>
-                <tr>
-                  <th>Impuestos:</th>
-                  <td>{{impuestos}}</td>
+                  <td class="text-success fw-bold">Gratis</td>
                 </tr>
                 <tr>
                   <th>Total:</th>
-                  <td>{{total}}</td>
+                  <td>${{total_price | intcomma}}</td>
                 </tr>
+                <tr>
+                  <th>Ahorro:</th>
+                  <td>${{total_discount | intcomma}}</td>
               </tbody>
             </table>
-            <button class="btn btn-primary btn-oval border-0 btn-block" style="background-color: #F15B41; border-radius: 50px;">Pagar</button>
+            <a class="btn btn-success {% if products %} {% else %} disabled {% endif%}" href="{% url 'shop:purchase' %}">Pagar</a>
           </div>
         </div>
       </div>
