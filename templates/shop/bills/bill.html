@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Factura</title>
+    <style>
+        /* Estilos CSS para la factura */
+        /* ... */
+    </style>
+</head>
+<body>
+    <h1>Factura</h1>
+
+    <h2>Detalles de la orden:</h2>
+    <p>Orden #: {{ order.id }}</p>
+    <p>Cliente: {{ user.username }}</p>
+    <p>Dirección de entrega: {{ order.shipping_address }}</p>
+
+    <h2>Productos:</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio unitario</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.product.name }}</td>
+                <td>{{ product.amount }}</td>
+                <td>{{ product.product.price }}</td>
+                <td>{{ product.amount * product.product.price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Total de la compra: {{ order.total }}</h2>
+
+</body>
+</html>
