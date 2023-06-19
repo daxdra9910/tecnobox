@@ -145,14 +145,11 @@ a {
     height: auto;
     justify-content: space-between;
     transition: box-shadow 0.2s;
-    transition: border 0.2s;
     border-radius: 10px;
 }
 
 .product-card:hover {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    transform: scale(1.01);
-    border: 1px solid #454545;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .product-card > img{
