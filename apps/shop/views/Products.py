@@ -1,7 +1,7 @@
 from django.views import View
 from django.shortcuts import render
 from django.db.models import Max, Sum, Avg, Count
-from apps.shop.models import Product, Category, Brand, ShoppingCartProduct
+from apps.shop.models import Product, Category, Brand, ShoppingCartProduct, ShoppingCart
 
 class Products(View):
 
@@ -43,17 +43,20 @@ class Products(View):
         if max_price:
             products = products.filter(price__lte=max_price)
 
-        # Carrito de compras
-        
-        count_cart_products = {}
         if user.is_authenticated:
-            count_cart_products = ShoppingCartProduct.objects.filter(
-              cart__user=user,
-               cart__is_active=True
-            ).aggregate(
-                total_productos=Sum('amount'),
-                cart_id=Max('cart__id')
-                )
+            # Obtener el carrito del usuario
+            try:
+                shopping_cart = ShoppingCart.objects.get(user=user, is_active=True)
+            except ShoppingCart.DoesNotExist:
+                shopping_cart = None
+            
+            # Obtener la cantidad de productos en el carrito
+            if shopping_cart:
+                product_count = ShoppingCartProduct.objects.filter(cart=shopping_cart).count()
+            else:
+                product_count = 0
+        else:
+            product_count = None
 
         context = {
             'products': products,
@@ -63,8 +66,7 @@ class Products(View):
             'selected_brand': int(brand_id) if brand_id else None,
             'min_price': min_price,
             'max_price': max_price,
-            'count_cart_products': count_cart_products.get('total_productos', 0),
-            'cart_id': count_cart_products.get('cart_id', 0),
+            'products_cart_count': product_count,
             'path': request.path
         }
 

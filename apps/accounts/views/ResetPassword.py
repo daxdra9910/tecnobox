@@ -6,6 +6,7 @@ from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.views import View
+from apps.shop.models import ShoppingCart, ShoppingCartProduct
 
 from apps.accounts.models import User
 
@@ -22,7 +23,28 @@ class AskResetPassword(View):
         """
         Muestra el formulario para recibir un correo de restablecimiento de contraseña.
         """
-        return render(request, 'accounts/reset_password/reset.html')
+        user = request.user
+        
+        if user.is_authenticated:
+            # Obtener el carrito del usuario
+            try:
+                shopping_cart = ShoppingCart.objects.get(user=user, is_active=True)
+            except ShoppingCart.DoesNotExist:
+                shopping_cart = None
+            
+            # Obtener la cantidad de productos en el carrito
+            if shopping_cart:
+                product_count = ShoppingCartProduct.objects.filter(cart=shopping_cart).count()
+            else:
+                product_count = 0
+        else:
+            product_count = None
+
+        context = {
+            'user': user,
+            'products_cart_count': product_count
+        }
+        return render(request, 'accounts/reset_password/reset.html', context)
 
 
     def post(self, request):

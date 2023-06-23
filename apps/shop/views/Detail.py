@@ -70,6 +70,21 @@ class Detail(View):
         else:
             total = product.price
 
+        if user.is_authenticated:
+            # Obtener el carrito del usuario
+            try:
+                shopping_cart = ShoppingCart.objects.get(user=user, is_active=True)
+            except ShoppingCart.DoesNotExist:
+                shopping_cart = None
+            
+            # Obtener la cantidad de productos en el carrito
+            if shopping_cart:
+                product_count = ShoppingCartProduct.objects.filter(cart=shopping_cart).count()
+            else:
+                product_count = 0
+        else:
+            product_count = None
+
         # Definimos el contexto de la plantilla.
         context = {
             'product': product,
@@ -83,6 +98,7 @@ class Detail(View):
             'average_rating': average_rating,
             'rating_counts': rating_counts,
             'has_reviewed': has_reviewed,
+            'products_cart_count': product_count
         }
 
         return render(request, 'shop/detail/detail.html', context)
