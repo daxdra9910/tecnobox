@@ -1,13 +1,31 @@
+from io import BytesIO
+from decimal import Decimal
+
+from django.http import HttpResponse
+from django.template.loader import get_template
 from django.views import View
 from django.shortcuts import get_object_or_404,render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.db import transaction
 
-from apps.shop.models import ShoppingCart, ShoppingCartProduct, Product, PurchaseOrder, OrderProduct
+from apps.shop.models import ShoppingCart, ShoppingCartProduct, Product, PurchaseOrder, OrderProduct, PaymentMethod
 from apps.accounts.models import Contact
 
-from decimal import Decimal
+from xhtml2pdf import pisa
+
+
+
+def render_to_pdf(template_src, context_dict={}):
+    template = get_template(template_src)
+    html  = template.render(context_dict)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return None
+
+
 
 class Cart(LoginRequiredMixin,View):
 
@@ -61,7 +79,7 @@ class Cart(LoginRequiredMixin,View):
             'products_cart_count': len(products)
         }
         return render(request, 'shop/cart.html', context)
-    
+
     def increase_quantity(request, product_id):
         # Obtener el producto seleccionado
         product = Product.objects.get(pk=product_id)
@@ -93,7 +111,7 @@ class Cart(LoginRequiredMixin,View):
         if cart_product.amount > 1:
             cart_product.amount -= 1
             cart_product.save()
-        
+
         return redirect('shop:cart')  # Redirigir a la página del carrito de compras
 
 
@@ -111,7 +129,7 @@ class Cart(LoginRequiredMixin,View):
         cart_product.delete()
 
         return redirect('shop:cart')  # Redirigir a la página del carrito de compras
-    
+
     def empty_cart(request):
         # Obtener el carrito de compras del usuario actual
         shopping_cart = ShoppingCart.objects.get(user=request.user)
@@ -124,15 +142,15 @@ class Cart(LoginRequiredMixin,View):
         shopping_cart.delete()
 
         return redirect('shop:cart')  # Redirigir a la página del carrito de compras
-    
+
     def purchase(request):
         # User
         user = request.user
 
         # Obtener el carrito de compras del usuario actual
-        cart = ShoppingCart.objects.get(user=user)
+        cart = ShoppingCart.objects.get(user=user, is_active=True)
 
-        # Crear una nueva orden de compra
+        # Crear una nueva orden de compra.
         with transaction.atomic():
             # Calcular los valores de subtotal, impuestos y total
             subtotal = Decimal('0.00')
@@ -147,21 +165,26 @@ class Cart(LoginRequiredMixin,View):
             taxes = subtotal * Decimal('0.19')
             total = subtotal + taxes
 
-            # Obtener la dirección del usuario si existe
-            contact = user.contact_set.first()
-            address = contact.address if contact else None
+            # Obtener la dirección del usuario.
+            address = Contact.objects.get(user=user)
 
-            # Crear la orden de compra
-            order = PurchaseOrder.objects.create(
-                user=user,
-                shopping_cart=cart,
-                shipping_address=address,
-                subtotal=subtotal,
-                taxes=taxes,
-                total=total,
-                payment_method=user,
-                status='P'  # Estado inicial: En proceso
-            )
+            # Método de pago predefinido.
+            payment_method = PaymentMethod.objects.get(pk=1)
+
+            try:
+                order = PurchaseOrder.objects.get(shopping_cart=cart)
+            except:
+                # Crear la orden de compra
+                order = PurchaseOrder.objects.create(
+                    user=user,
+                    shopping_cart=cart,
+                    shipping_address=address,
+                    subtotal=subtotal,
+                    taxes=taxes,
+                    total=total,
+                    payment_method=payment_method,
+                    status='P'  # Estado inicial: En proceso
+                )
 
             # Obtener los productos del carrito
             cart_products = ShoppingCartProduct.objects.filter(cart=cart)
@@ -175,5 +198,57 @@ class Cart(LoginRequiredMixin,View):
                 )
 
             # Vaciar el carrito de compras
-            cart.products.all().delete()
-        return redirect('shop:cart')
+            # cart.is_active = False
+            # cart.save()
+        return redirect('shop:bill')
+
+
+
+class FacturaPDF(View):
+    def get(self, request, *args, **kwargs):
+        # Obtener el usuario autenticado
+        user = request.user
+
+        # Obtener el carrito del usuario
+        shopping_cart = ShoppingCart.objects.get(user=user, is_active=True)
+
+        # Obtener los productos en el carrito y calcular el total del valor de la compra
+        products = []
+        total_price = 0
+        total_discount = 0
+        cart_products = ShoppingCartProduct.objects.filter(cart=shopping_cart)
+        product_instances = {}
+        for cart_product in cart_products:
+            product = cart_product.product
+            if product in product_instances:
+                product_instances[product] += cart_product.amount
+            else:
+                product_instances[product] = cart_product.amount
+            total_price += product.price * cart_product.amount
+
+        # Crear una lista de productos únicos con la cantidad de unidades, precio con descuento y subtotal
+        for product, amount in product_instances.items():
+            discount_price = product.price
+            if product.discounts.exists():
+                discount = product.discounts.first()
+                discount_price -= discount.discount_value
+                total_discount += discount.discount_value*amount
+            subtotal = discount_price * amount
+            products.append({
+                'product': product,
+                'amount': amount,
+                'subtotal': subtotal,
+                'price_with_discount': discount_price
+            })
+
+        order = shopping_cart.purchaseorder
+
+        data = {
+            'order': order,
+            'products': products,
+            'total_price': total_price,
+            'total_discount': total_discount,
+            'products_cart_count': len(products)
+        }
+        pdf = render_to_pdf('shop/bills/bill.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')

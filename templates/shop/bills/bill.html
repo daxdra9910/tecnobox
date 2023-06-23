@@ -1,44 +1,133 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Factura</title>
-    <style>
-        /* Estilos CSS para la factura */
-        /* ... */
-    </style>
-</head>
-<body>
-    <h1>Factura</h1>
+{% extends "./base.html" %}
+
+
+{% load static %}
+{% load humanize %}
+
+
+{% block resources %}
+<style>
+    @page {
+        size: "A4";
+        margin: 2.0cm 2.0cm 2.0cm 2.0cm;
+        @frame footer {
+            -pdf-frame-content: footer;
+            bottom: 1cm;
+            margin-left: 2cm;
+            margin-right: 2cm;
+            height: 1cm;
+         }
+    }
+    body {
+        background: #fff;
+        color: #2d2d2d;
+        font-size: 12px;
+        font-family: sans-serif;
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+        -webkit-text-size-adjust: none;
+    }
+    h1 {
+        color: rgb(55, 129, 232);
+        line-height: 0;
+        margin-top: 30px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        font-size: 20px;
+    }
+    #header-col-0 {
+        width: 13%;
+        color: rgb(202, 64, 64);
+        font-size: 60px;
+        text-align: center;
+        line-height: 0;
+        vertical-align: middle;
+    }
+    #header-col-1 {
+        width: 50%;
+    }
+    #header-col-2 {
+        width: 15%;
+        vertical-align: center;
+    }
+    #report-label {
+        font-size: 13px;
+        font-weight: bold;
+    }
+    .data-table {
+        margin-top: 50px;
+        margin-bottom: 25px;
+        border-collapse: separate;
+    }
+    .data-th {
+        background-color: #f9f9f9;
+    }
+    .data-th, .data-td {
+        text-align: left;
+        border: 0.1px solid #2d2d2d;
+        padding: 2px;
+    }
+    .text-left {
+        text-align: left !important;
+    }
+    #title {
+        font-size: 48px;
+        font-weight: bold;
+        font-variant: small-caps;
+        letter-spacing: 2px;
+        color: rgb(55, 129, 232);
+        line-height: 0;
+    }
+    #subtitle {
+        font-size: 19px;
+        font-weight: bold;
+        font-variant: small-caps;
+        letter-spacing: 1px;
+        color: rgb(20, 92, 193);
+        line-height: 0;
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+    <h1>Tecnobox Ltda.</h1>
 
     <h2>Detalles de la orden:</h2>
-    <p>Orden #: {{ order.id }}</p>
-    <p>Cliente: {{ user.username }}</p>
-    <p>Dirección de entrega: {{ order.shipping_address }}</p>
+    <p>Orden #: {{ order.id|stringformat:'08d' }} <br>
+    Cliente: {{ order.user.get_full_name }} <br>
+    Dirección de entrega: {{ order.shipping_address.address }}, {{ order.shipping_address.city }}</p>
 
-    <h2>Productos:</h2>
-    <table>
+    <table class="data-table">
         <thead>
-            <tr>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Precio unitario</th>
-                <th>Total</th>
+            <tr class="data-tr">
+                <th class="data-th">Producto</th>
+                <th class="data-th">Cantidad</th>
+                <th class="data-th">Precio unitario</th>
+                <th class="data-th">Total</th>
             </tr>
         </thead>
         <tbody>
             {% for product in products %}
-            <tr>
-                <td>{{ product.product.name }}</td>
-                <td>{{ product.amount }}</td>
-                <td>{{ product.product.price }}</td>
-                <td>{{ product.amount * product.product.price }}</td>
+            <tr class="data-tr">
+                <td class="data-td">{{ product.product.name }}</td>
+                <td class="data-td">{{ product.amount }}</td>
+                <td class="data-td">${{ product.product.price|intcomma }}</td>
+                <td class="data-td">${% widthratio product.amount 1 product.product.price %}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 
-    <h2>Total de la compra: {{ order.total }}</h2>
+    <h2>Total de la compra: ${{ order.total|intcomma }}</h2>
 
-</body>
-</html>
+    <br><br><br><br>
+
+    <p>
+        Consignación bancaria a nivel nacional a través de corresponsal bancario. <br>
+        Transferencia electrónica por cajero electrónico o Internet. <br>
+        Bancolombia cuenta de ahorros número 715-090901-11 a favor de la empresa Tecnobox Ltda. NIT 0000000. <br>
+        <br>
+        Cuando haga el respectivo pago, por favor enviar una imagen del comprobante de pago al email ventas@tecnobox.com.
+    </p>
+{% endblock %}

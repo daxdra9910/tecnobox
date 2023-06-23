@@ -17,6 +17,7 @@ urlpatterns = [
     path('products/<int:product_id>/make-review/', views.MakeReview.as_view(), name='make-review'),
     path('discounts/',views.Discounts.as_view(), name='discounts' ),
     path('cart/', views.Cart.as_view(), name='cart'),
+    path('bill/', views.FacturaPDF.as_view(), name='bill'),
     path('increase-quantity/<int:product_id>/', views.Cart.increase_quantity, name='increase-quantity'),
     path('decrease-quantity/<int:product_id>/', views.Cart.decrease_quantity, name='decrease-quantity'),
     path('remove-from-cart/<int:product_id>/', views.Cart.remove_from_cart, name='remove-from-cart'),
